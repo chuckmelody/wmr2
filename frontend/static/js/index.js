@@ -154,7 +154,7 @@ function initializePlayer() {
 
     const handleSeekLeft = async () => {
       seekLeftBtn.classList.add("d-none");
-      // seekLeftBtnOn.classList.remove("d-none");
+      seekLeftBtnOn.classList.remove("d-none");
       const currentPosition = await audio.getPosition();
       const newPosition = Math.max(0, currentPosition - 10); // subtract 10 seconds
       await audio.seek(newPosition);
@@ -162,7 +162,7 @@ function initializePlayer() {
 
     const handleSeekRight = async () => {
       seekRightBtn.classList.add("d-none");
-      // seekRightBtnOn.classList.remove("d-none");
+      seekRightBtnOn.classList.remove("d-none");
       const currentPosition = await audio.getPosition();
       const duration = await audio.getDuration();
       const newPosition = Math.min(duration, currentPosition + 10); // add 10 seconds
@@ -175,7 +175,6 @@ function initializePlayer() {
 
     const startSeekRight = () => {
       seekIntervalRight = setInterval(handleSeekRight, 200);
-      handleSeekRight();
     };
 
     const stopSeek = (seekInterval, seekBtn, seekBtnOn) => {
@@ -185,19 +184,19 @@ function initializePlayer() {
     };
 
     seekLeftBtn.addEventListener("mousedown", startSeekLeft);
-    seekLeftBtn.addEventListener("mouseup", () =>
+    seekLeftBtnOn.addEventListener("mouseup", () =>
       stopSeek(seekIntervalLeft, seekLeftBtn, seekLeftBtnOn)
     );
-    seekLeftBtn.addEventListener("mouseout", () =>
+    seekLeftBtnOn.addEventListener("mouseout", () =>
       stopSeek(seekIntervalLeft, seekLeftBtn, seekLeftBtnOn)
     );
 
     seekRightBtn.addEventListener("mousedown", startSeekRight);
-    seekRightBtn.addEventListener("mouseup", () =>
-      stopSeek(seekIntervalRight, seekRightBtn)
+    seekRightBtnOn.addEventListener("mouseup", () =>
+      stopSeek(seekIntervalRight, seekRightBtn, seekRightBtnOn)
     );
-    seekRightBtn.addEventListener("mouseout", () =>
-      stopSeek(seekIntervalRight, seekRightBtn)
+    seekRightBtnOn.addEventListener("mouseout", () =>
+      stopSeek(seekIntervalRight, seekRightBtn, seekRightBtnOn)
     );
 
     // seekLeftBtn.addEventListener("mousedown", () => {

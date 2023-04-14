@@ -94,6 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
   router();
 });
 
+let state = {
+  isPlaying: false,
+};
+
+let currentTrackIndex = 86;
+let currentTrack = null;
+
 function openplayer(
   buttons,
   mixcloudButton,
@@ -115,7 +122,7 @@ function openplayer(
 
       let currentTime = playerDiv.querySelector("#wmr-foot-player-currentTime");
       let wmrduration = playerDiv.querySelector("#wmr-foot-player-duration");
-      let next = playerDiv.querySelector("#wmr-mixcloud-double-right");
+      // let next = playerDiv.querySelector("#wmr-mixcloud-double-right");
       let seekRightBtn = playerDiv.querySelector("#wmr-mixcloud-bar-right");
       let repeat = playerDiv.querySelector("#wmr-mixcloud-repeat");
       let repeatOn = playerDiv.querySelector("#wmr-mixcloud-repeat-on");
@@ -123,6 +130,32 @@ function openplayer(
       let muteOn = playerDiv.querySelector("#wmr-mixcloud-volume-off");
       let progressBar = playerDiv.querySelector(".wmr-footer-progress-bar");
       let seekBar = playerDiv.querySelector(".wmr-footer-seek-bar");
+
+      audio.ready.then(function () {
+        // Put code that interacts with the widget here
+        // run your function here
+        playerbtnControl(
+          playBtn,
+          pauseBtn,
+          stopBtn,
+          audio,
+          progressBar,
+          seekBar
+        );
+        playerStopbtn(stopBtn, pauseBtn, playBtn, audio);
+        volueMuteControl(muteOff, muteOn);
+        repeatControl(repeat, repeatOn);
+        wnrDuration(audio, wmrduration, currentTime, progressBar, seekBar);
+
+        getTracklist().then((tracklist) => {
+          currentTrack = tracklist[currentTrackIndex];
+          audio.load(currentTrack.url);
+          wmrPlaylist(tracklist);
+          wmrCurrentPlay(currentTrack);
+          wmrPreviousTrack(tracklist);
+          wmrNextTrack(tracklist);
+        });
+      });
     }
   });
 
@@ -135,6 +168,94 @@ function openplayer(
     const data = await response.json();
     return data;
   };
+
+  // Initialize the player with the first track from the tracklist
+
+  function wmrPreviousTrack(tracklist) {
+    // Add event listener to the previous track button
+    const prev = playerDiv.querySelector("#wmr-mixcloud-double-left");
+    prev.addEventListener("click", () => {
+      playPrevTrack(tracklist);
+    });
+  }
+
+  function playPrevTrack(tracklist) {
+    let playBtn = playerDiv.querySelector("#wmr-mixcloud-play");
+    let pauseBtn = playerDiv.querySelector("#wmr-mixcloud-pause");
+    currentTrackIndex--;
+    if (currentTrackIndex < 0) {
+      currentTrackIndex = tracklist.length - 1;
+    }
+    currentTrack = tracklist[currentTrackIndex];
+    console.log(currentTrackIndex);
+    audio.load(currentTrack.url, true).then(() => {
+      playBtn.click();
+    });
+    wmrCurrentPlay(currentTrack);
+  }
+
+  function wmrNextTrack(tracklist) {
+    // Add event listener to the next track button
+    const next = playerDiv.querySelector("#wmr-mixcloud-double-right");
+    console.log(tracklist);
+    next.addEventListener("click", () => {
+      playNextTrack(tracklist);
+    });
+  }
+
+  function playNextTrack(tracklist) {
+    let playBtn = playerDiv.querySelector("#wmr-mixcloud-play");
+    let pauseBtn = playerDiv.querySelector("#wmr-mixcloud-pause");
+    currentTrackIndex++;
+    if (currentTrackIndex >= tracklist.length) {
+      currentTrackIndex = 0;
+    }
+    currentTrack = tracklist[currentTrackIndex];
+    console.log(currentTrackIndex);
+    audio.load(currentTrack.url, true).then(() => {
+      playBtn.click();
+    });
+    wmrCurrentPlay(currentTrack);
+  }
+
+  function wmrCurrentPlay(track) {
+    let nowPlayImg = playerDiv.querySelector("#wmr-player-center-info-con");
+    let nowPlayTitle = playerDiv.querySelector("#wmr-foot-player-title");
+    let nowPlayArtist = playerDiv.querySelector("#wmr-foot-player-artist");
+    nowPlayTitle.innerText = track.name;
+    nowPlayImg.innerHTML = "";
+    nowPlayImg.innerHTML = `<img src=${track.pictures.medium} class="img-fluid" alt=${track.name}>`;
+  }
+
+  function wmrPlaylist(tracklist) {
+    setTimeout(function () {
+      let wmrPlaylist = document.querySelector("#playlist-tracks");
+      console.log(wmrPlaylist);
+      wmrPlaylist.innerHTML =
+        tracklist &&
+        tracklist
+          .map((item, itemIndex) => {
+            return `
+<li class="Playlist-item item mb-3" itemIndex=${itemIndex}>
+  <div class="thumbnail">
+    <img loading="lazy" itemIndex=${itemIndex} class="img-fluid "src=${item.pictures.medium} alt=${item.name} />
+      
+  </div>
+  <div class="wmrPlaylistdetails">
+    <p class="wmr-playlist-Title mb-0 text-white text-start">${item.name}</p>
+    <p class="wmr-playlist-By mb-0 text-light text-start fs-7">By: Chuck Melody</p>
+  </div>
+  <div class="ms-auto">
+    <p class="mb-0 text-white"><img class="img-fluid" src="../static/img/wmr/three-dots-vertical.svg" /></p>
+  </div>
+</li>
+`;
+          })
+          .join("");
+
+      console.log(tracklist);
+    }, 500);
+  }
 
   playerButton.addEventListener("click", function () {
     playerDiv.classList.toggle("hidden");
@@ -154,6 +275,128 @@ function openplayer(
       // Add the active class to the clicked button
       button.classList.add("btn-active");
     });
+  });
+}
+
+function wnrDuration(audio, wmrduration, currentTime, progressBar, seekBar) {
+  let wmrGetDuration = "";
+  let wmrGetcurrentTime = "";
+  audio.getDuration().then(function (duration) {
+    wmrGetDuration = secondsToString(duration);
+    wmrduration.innerText = wmrGetDuration;
+  });
+
+  setInterval(function () {
+    audio.getPosition().then(function (position) {
+      wmrGetcurrentTime = updateTimeSpan(parseInt(position));
+      currentTime.innerText = wmrGetcurrentTime;
+    });
+  }, 1000);
+}
+
+function secondsToString(seconds) {
+  let numyears = Math.floor(seconds / 31536000);
+  let numdays = Math.floor((seconds % 31536000) / 86400);
+  let numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
+  let numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
+  let numseconds = (((seconds % 31536000) % 86400) % 3600) % 60;
+  return numhours + ":" + numminutes + ":" + numseconds + " ";
+}
+
+function updateTimeSpan(seconds) {
+  const hours = Math.floor(seconds / 3600);
+  const remainingSeconds = seconds % 3600;
+  const minutes = Math.floor(remainingSeconds / 60);
+  const finalSeconds = remainingSeconds % 60;
+  return `${hours.toString().padStart(2, "0")}:${minutes
+    .toString()
+    .padStart(2, "0")}:${finalSeconds.toString().padStart(2, "0")}`;
+}
+
+function repeatControl(repeat, repeatOn) {
+  // Attach event listener to volume button
+  repeat.addEventListener("click", () => {
+    repeat.classList.add("d-none");
+    repeatOn.classList.remove("d-none");
+  });
+
+  // Attach event listener to pause button
+  repeatOn.addEventListener("click", () => {
+    repeatOn.classList.add("d-none");
+    repeat.classList.remove("d-none");
+  });
+}
+
+function volueMuteControl(muteOff, muteOn) {
+  // Attach event listener to volume button
+  muteOff.addEventListener("click", () => {
+    muteOff.classList.add("d-none");
+    muteOn.classList.remove("d-none");
+  });
+
+  // Attach event listener to pause button
+  muteOn.addEventListener("click", () => {
+    muteOn.classList.add("d-none");
+    muteOff.classList.remove("d-none");
+  });
+}
+
+function playerbtnControl(
+  playBtn,
+  pauseBtn,
+  stopBtn,
+  audio,
+  progressBar,
+  seekBar
+) {
+  // Attach event listener to play button
+
+  playBtn.addEventListener("click", () => {
+    // Add event listeners for the player widget
+
+    audio.play();
+    audio.events.play.on(() => {
+      state.isPlaying = true;
+    });
+
+    playBtn.classList.add("d-none");
+    pauseBtn.classList.remove("d-none");
+    // Play button click event
+    // Enable the stop button
+    stopBtn.disabled = false;
+  });
+
+  // Attach event listener to pause button
+  pauseBtn.addEventListener("click", () => {
+    audio.pause();
+
+    audio.events.pause.on(() => {
+      state.isPlaying = false;
+    });
+
+    pauseBtn.classList.add("d-none");
+    playBtn.classList.remove("d-none");
+  });
+
+  audio.events.ended.on(() => {
+    state.isPlaying = false;
+  });
+}
+
+function playerStopbtn(stopBtn, pauseBtn, playBtn, audio) {
+  // Stop button click event
+  stopBtn.addEventListener("click", async () => {
+    // Check if the audio is playing before allowing the stop button to be clicked
+    if (!audio.paused) {
+      // Pause the player
+      await audio.pause().then(function () {
+        // Change play pause button
+        pauseBtn.classList.add("d-none");
+        playBtn.classList.remove("d-none");
+
+        stopBtn.disabled = true;
+      });
+    }
   });
 }
 

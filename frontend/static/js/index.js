@@ -160,11 +160,14 @@ function openplayer(
   });
 
   // Get the tracklist from the JSON server
-  async function getTracklist() {
+  const getTracklist = async () => {
     const response = await fetch("http://localhost:3000/songs");
+    if (!response.ok) {
+      throw new Error("Failed to fetch tracklist");
+    }
     const data = await response.json();
     return data;
-  }
+  };
 
   // Initialize the player with the first track from the tracklist
 
@@ -519,4 +522,3 @@ function mixcloudPlayer(mixcloudBtnConRow) {
 
   `;
 }
-

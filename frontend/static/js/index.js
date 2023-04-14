@@ -89,6 +89,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   router();
   initializePlayer();
+
+  // Add event listeners to the Mixcloud player controls
+  const playBtn = document.getElementById("wmr-mixcloud-play");
+  const pauseBtn = document.getElementById("wmr-mixcloud-pause");
+  const stopBtn = document.getElementById("wmr-mixcloud-stop");
+  const seekBar = document.getElementById("wmr-mixcloud-seek-bar");
+  const muteOffBtn = document.getElementById("wmr-mixcloud-mute-off");
+  const muteOnBtn = document.getElementById("wmr-mixcloud-mute-on");
+  const repeatBtn = document.getElementById("wmr-mixcloud-repeat");
+  const repeatOnBtn = document.getElementById("wmr-mixcloud-repeat-on");
 });
 
 // // Get the tracks from the JSON server
@@ -110,68 +120,15 @@ function initializePlayer() {
   // Wait for the audio to be ready before interacting with it
   audio.ready.then(() => {
     // Add event listeners to player controls
-    if (!playerDiv.classList.contains("hidden")) {
-      const progressBar = document.getElementById("wmr-mixcloud-progress-bar");
-      const muteOff = document.getElementById("wmr-mixcloud-mute-off");
-      const muteOn = document.getElementById("wmr-mixcloud-mute-on");
-      const repeat = document.getElementById("wmr-mixcloud-repeat");
-      const repeatOn = document.getElementById("wmr-mixcloud-repeat-on");
-
-      // Add event listeners to the Mixcloud player controls
-      const playBtn = document.getElementById("wmr-mixcloud-play");
-      const pauseBtn = document.getElementById("wmr-mixcloud-pause");
-      const stopBtn = document.getElementById("wmr-mixcloud-stop");
-      const seekBar = document.getElementById("wmr-mixcloud-seek-bar");
-      const muteOffBtn = document.getElementById("wmr-mixcloud-mute-off");
-      const muteOnBtn = document.getElementById("wmr-mixcloud-mute-on");
-      const repeatBtn = document.getElementById("wmr-mixcloud-repeat");
-      const repeatOnBtn = document.getElementById("wmr-mixcloud-repeat-on");
-    }
-    playBtn.addEventListener("click", () => {
-      audio.play();
-      playBtn.classList.add("d-none");
-      pauseBtn.classList.remove("d-none");
-    });
-    pauseBtn.addEventListener("click", () => {
-      audio.pause();
-      pauseBtn.classList.add("d-none");
-      playBtn.classList.remove("d-none");
-    });
-
-    stopBtn.addEventListener("click", () => {
-      audio.pause();
-      audio.seek(0);
-      playBtn.classList.remove("d-none");
-      pauseBtn.classList.add("d-none");
-    });
-
-    seekBar.addEventListener("input", () => {
-      const seekTime = (seekBar.value / 100) * audio.duration;
-      audio.seek(seekTime);
-    });
-    muteOffBtn.addEventListener("click", () => {
-      audio.setVolume(0);
-      muteOffBtn.classList.add("d-none");
-      muteOnBtn.classList.remove("d-none");
-    });
-
-    muteOnBtn.addEventListener("click", () => {
-      audio.setVolume(1);
-      muteOnBtn.classList.add("d-none");
-      muteOffBtn.classList.remove("d-none");
-    });
-
-    repeatBtn.addEventListener("click", () => {
-      audio.setLoop(true);
-      repeatBtn.classList.add("d-none");
-      repeatOnBtn.classList.remove("d-none");
-    });
-
-    repeatOnBtn.addEventListener("click", () => {
-      audio.setLoop(false);
-      repeatOnBtn.classList.add("d-none");
-      repeatBtn.classList.remove("d-none");
-    });
+    const playBtn = document.getElementById("wmr-mixcloud-play");
+    const pauseBtn = document.getElementById("wmr-mixcloud-pause");
+    const stopBtn = document.getElementById("wmr-mixcloud-stop");
+    const progressBar = document.getElementById("wmr-mixcloud-progress-bar");
+    const seekBar = document.getElementById("wmr-mixcloud-seek-bar");
+    const muteOff = document.getElementById("wmr-mixcloud-mute-off");
+    const muteOn = document.getElementById("wmr-mixcloud-mute-on");
+    const repeat = document.getElementById("wmr-mixcloud-repeat");
+    const repeatOn = document.getElementById("wmr-mixcloud-repeat-on");
 
     // Add event listeners for player controls
     playBtn.addEventListener("click", () => {

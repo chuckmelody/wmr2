@@ -115,7 +115,7 @@ function initializePlayer() {
     const playBtn = document.getElementById("wmr-mixcloud-play");
     const pauseBtn = document.getElementById("wmr-mixcloud-pause");
     const stopBtn = document.getElementById("wmr-mixcloud-stop");
-    const progressBar = document.getElementById("wmr-mixcloud-progress-bar");
+    const progressBar = document.getElementById("wmr-footer-progress");
     const seekBar = document.getElementById("wmr-mixcloud-seek-bar");
     const muteOff = document.getElementById("wmr-mixcloud-volume-off");
     const muteOn = document.getElementById("wmr-mixcloud-volume");
@@ -152,15 +152,16 @@ function initializePlayer() {
       audio.setLoop(false);
     });
 
-    console.log(audio);
     // // Update progress bar and seek bar as track plays
-    // audio.on("timeupdate", () => {
-    //   const currentTime = audio.getCurrentTime();
-    //   const duration = audio.getDuration();
-    //   const progress = (currentTime / duration) * 100;
-    //   progressBar.style.width = progress + "%";
-    //   seekBar.value = currentTime;
-    // });
+    audio.events.progress.on(() => {
+      // const currentTime = audio.getPosition();
+      // const duration = audio.getDuration();
+      // const progress = (currentTime / duration) * 100;
+      // progressBar.style.width = progress + "%";
+      // seekBar.value = currentTime;
+
+      console.log(progressBar);
+    });
   });
 
   // Return the Mixcloud Player Widget

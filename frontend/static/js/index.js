@@ -188,14 +188,11 @@ function openplayer(
     }
     currentTrack = tracklist[currentTrackIndex];
     console.log(currentTrackIndex);
-
-    // Reset the audio player
-    audio.pause();
-    audio.currentTime = 0;
-    audio.load(currentTrack.url, true);
-
-    playBtn.click();
-    wmrCurrentPlay(currentTrack);
+    audio.ready.then(() => {
+      audio.load(currentTrack.url, true);
+      audio.play();
+      wmrCurrentPlay(currentTrack);
+    });
   }
 
   function wmrNextTrack(tracklist) {
@@ -216,13 +213,8 @@ function openplayer(
     }
     currentTrack = tracklist[currentTrackIndex];
     console.log(currentTrackIndex);
-
-    // Reset the audio player
-    audio.pause();
-    audio.currentTime = 0;
     audio.load(currentTrack.url, true);
-
-    playBtn.click();
+    audio.play(); // play the loaded track
     wmrCurrentPlay(currentTrack);
   }
 

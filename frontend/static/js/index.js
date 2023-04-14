@@ -119,9 +119,9 @@ function initializePlayer() {
     const seekLeftBtn = playerDiv.querySelector("#wmr-mixcloud-seek-left");
     const seekLeftBtnOn = playerDiv.querySelector("#wmr-mixcloud-seek-left-on");
     const seekRightBtn = playerDiv.querySelector("#wmr-mixcloud-seek-right");
-    // const seekRightBtnOn = playerDiv.querySelector(
-    //   "#wmr-mixcloud-seek-right-on"
-    // );
+    const seekRightBtnOn = playerDiv.querySelector(
+      "#wmr-mixcloud-seek-right-on"
+    );
     const muteOff = document.getElementById("wmr-mixcloud-volume-off");
     const muteOn = document.getElementById("wmr-mixcloud-volume");
     const repeat = document.getElementById("wmr-mixcloud-repeat");
@@ -150,54 +150,44 @@ function initializePlayer() {
       stopBtn.disabled = true;
     });
 
-    let seekIntervalLeft, seekIntervalRight;
+    // Define the seek intervals in milliseconds
+    const seekInterval = 200;
+    const seekStep = 10;
 
-    const handleSeekLeft = async () => {
-      seekLeftBtn.classList.add("d-none");
-      seekLeftBtnOn.classList.remove("d-none");
+    // Declare variables to store the interval IDs
+    let seekLeftIntervalId = null;
+    let seekRightIntervalId = null;
+
+    // Define the functions to seek left and right
+    const seekLeft = async () => {
       const currentPosition = await audio.getPosition();
-      const newPosition = Math.max(0, currentPosition - 10); // subtract 10 seconds
+      const newPosition = Math.max(0, currentPosition - seekStep); // subtract seekStep seconds
       await audio.seek(newPosition);
     };
 
-    const handleSeekRight = async () => {
-      seekRightBtn.classList.add("d-none");
-      seekRightBtnOn.classList.remove("d-none");
+    const seekRight = async () => {
       const currentPosition = await audio.getPosition();
       const duration = await audio.getDuration();
-      const newPosition = Math.min(duration, currentPosition + 10); // add 10 seconds
+      const newPosition = Math.min(duration, currentPosition + seekStep); // add seekStep seconds
       await audio.seek(newPosition);
     };
 
-    const startSeekLeft = () => {
-      seekIntervalLeft = setInterval(handleSeekLeft, 200);
-    };
+    // Attach event listeners to the seek buttons
+    seekLeftBtn.addEventListener("mousedown", () => {
+      seekLeftIntervalId = setInterval(seekLeft, seekInterval);
+    });
 
-    const startSeekRight = () => {
-      seekIntervalRight = setInterval(handleSeekRight, 200);
-    };
+    seekLeftBtn.addEventListener("mouseup", () => {
+      clearInterval(seekLeftIntervalId);
+    });
 
-    const stopSeek = (seekInterval, seekBtn, seekBtnOn) => {
-      seekBtn.classList.remove("d-none");
-      seekBtnOn.classList.add("d-none");
-      clearInterval(seekInterval);
-    };
+    seekRightBtn.addEventListener("mousedown", () => {
+      seekRightIntervalId = setInterval(seekRight, seekInterval);
+    });
 
-    seekLeftBtn.addEventListener("mousedown", startSeekLeft);
-    seekLeftBtnOn.addEventListener("mouseup", () =>
-      stopSeek(seekIntervalLeft, seekLeftBtn, seekLeftBtnOn)
-    );
-    seekLeftBtnOn.addEventListener("mouseout", () =>
-      stopSeek(seekIntervalLeft, seekLeftBtn, seekLeftBtnOn)
-    );
-
-    seekRightBtn.addEventListener("mousedown", startSeekRight);
-    seekRightBtnOn.addEventListener("mouseup", () =>
-      stopSeek(seekIntervalRight, seekRightBtn, seekRightBtnOn)
-    );
-    seekRightBtnOn.addEventListener("mouseout", () =>
-      stopSeek(seekIntervalRight, seekRightBtn, seekRightBtnOn)
-    );
+    seekRightBtn.addEventListener("mouseup", () => {
+      clearInterval(seekRightIntervalId);
+    });
 
     // seekLeftBtn.addEventListener("mousedown", () => {
     //   seekIntervalLeft = setInterval(async () => {
@@ -425,11 +415,11 @@ function mixcloudPlayer(mixcloudBtnConRow) {
            <span class="pad-text"><img
               src="/static/img/wmr/icons/arrow-bar-right.svg"></span>
            </button>
-           <!-- <button class="pad-button d-none" id="wmr-mixcloud-seek-right-on">
+           <button class="pad-button d-none" id="wmr-mixcloud-seek-right-on">
            <img class="img-fluid pad-image" src="/static/img/wmr/pad_on.png">
            <span class="pad-text" id="wmr-mixcloud-seek-right-img""><img
               src="/static/img/wmr/icons/arrow-bar-right-on.svg"></span>
-           </button> -->
+           </button>
         </div>
         <div class="col-md-3 p-0 text-center">
            <button class="pad-button" id="wmr-mixcloud-repeat">

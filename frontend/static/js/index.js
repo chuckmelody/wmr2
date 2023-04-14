@@ -62,10 +62,9 @@ const router = async () => {
 
 window.addEventListener("popstate", router);
 
-let audio;
+let audio = Mixcloud.PlayerWidget(document.getElementById("wmr-audio-iframe"));
 let currentTrackIndex = 90;
 let currentTrack = "";
-let isPlaying = false;
 let progressIntervalId = null;
 
 // Get all the buttons
@@ -89,9 +88,6 @@ const muteOff = playerDiv.querySelector("#wmr-mixcloud-volume");
 const muteOn = playerDiv.querySelector("#wmr-mixcloud-volume-off");
 const progressBar = playerDiv.querySelector(".wmr-footer-progress-bar");
 const seekBar = playerDiv.querySelector(".wmr-footer-seek-bar");
-// const audio = Mixcloud.PlayerWidget(
-//   document.getElementById("wmr-audio-iframe")
-// );
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", (e) => {
@@ -107,6 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
     loadTrack(tracklist[currentTrackIndex]);
     // Other code that updates the UI with the current track info
     // and sets up event listeners for the player controls
+  });
+  audio.on("loadedmetadata", function () {
+    // Code that runs when the metadata has loaded
+    const duration = audio.duration;
+    const durationInMinutes = Math.floor(duration / 60);
+    const durationInSeconds = Math.floor(duration % 60);
+    wmrduration.textContent = `${durationInMinutes}:${durationInSeconds}`;
+  });
+  audio.on("timeupdate", function () {
+    // Code that runs when the playback position has changed
   });
 });
 

@@ -186,15 +186,16 @@ function openplayer(
     if (currentTrackIndex < 0) {
       currentTrackIndex = tracklist.length - 1;
     }
-
-    currentTrack = "";
     currentTrack = tracklist[currentTrackIndex];
     console.log(currentTrackIndex);
 
+    // Reset the audio player
+    audio.pause();
+    audio.currentTime = 0;
     audio.load(currentTrack.url, true);
 
-    wmrCurrentPlay(currentTrack);
     playBtn.click();
+    wmrCurrentPlay(currentTrack);
   }
 
   function wmrNextTrack(tracklist) {
@@ -215,11 +216,14 @@ function openplayer(
     }
     currentTrack = tracklist[currentTrackIndex];
     console.log(currentTrackIndex);
-    state.isPlaying = false;
+
+    // Reset the audio player
+    audio.pause();
+    audio.currentTime = 0;
     audio.load(currentTrack.url, true);
-    console.log(audio.load(currentTrack.url, true));
-    wmrCurrentPlay(currentTrack);
+
     playBtn.click();
+    wmrCurrentPlay(currentTrack);
   }
 
   function wmrCurrentPlay(track) {

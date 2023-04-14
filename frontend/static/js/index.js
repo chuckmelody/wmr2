@@ -166,28 +166,34 @@ function initializePlayer() {
     };
 
     const seekRight = async () => {
-      // seekRightBtn.classList.add("d-none");
-      // seekRightBtnOn.classList.remove("d-none");
       const currentPosition = await audio.getPosition();
       const duration = await audio.getDuration();
-      const newPosition = Math.min(duration, currentPosition + 10000); // add 10 seconds
+      const newPosition = Math.min(duration, currentPosition + 20); // add 10 seconds
       await audio.seek(newPosition);
     };
 
     // Attach event listeners to the seek buttons
     seekLeftBtn.addEventListener("mousedown", () => {
+      seekLeftBtn.classList.add("d-none");
+      seekLeftBtnOn.classList.remove("d-none");
       seekLeftIntervalId = setInterval(seekLeft, seekInterval);
     });
 
-    seekLeftBtn.addEventListener("mouseup", () => {
+    seekLeftBtnOn.addEventListener("mouseup", () => {
+      seekLeftBtnOn.classList.add("d-none");
+      seekLeftBtn.classList.remove("d-none");
       clearInterval(seekLeftIntervalId);
     });
 
     seekRightBtn.addEventListener("mousedown", () => {
+      seekRightBtn.classList.add("d-none");
+      seekRightBtnOn.classList.remove("d-none");
       seekRightIntervalId = setInterval(seekRight, seekInterval);
     });
 
-    seekRightBtn.addEventListener("mouseup", () => {
+    seekRightBtnOn.addEventListener("mouseup", () => {
+      seekRightBtnOn.classList.add("d-none");
+      seekRightBtn.classList.remove("d-none");
       clearInterval(seekRightIntervalId);
     });
 

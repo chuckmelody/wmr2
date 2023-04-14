@@ -74,20 +74,10 @@ const playerButton = document.querySelector("#player-button-mobile");
 const playerDiv = document.querySelector("#player-div");
 const playerClose = document.querySelector("#player-close");
 const mixcloudBtnConRow = document.querySelector("#wmr-player-btns-con");
-const playBtn = playerDiv.querySelector("#wmr-mixcloud-play");
-const pauseBtn = playerDiv.querySelector("#wmr-mixcloud-pause");
-const stopBtn = playerDiv.querySelector("#wmr-mixcloud-stop");
-const seekLeftBtn = playerDiv.querySelector("#wmr-mixcloud-seek-left");
 const currentTime = playerDiv.querySelector("#wmr-foot-player-currentTime");
 const wmrduration = playerDiv.querySelector("#wmr-foot-player-duration");
 const next = playerDiv.querySelector("#wmr-mixcloud-double-right");
 const seekRightBtn = playerDiv.querySelector("#wmr-mixcloud-bar-right");
-const repeat = playerDiv.querySelector("#wmr-mixcloud-repeat");
-const repeatOn = playerDiv.querySelector("#wmr-mixcloud-repeat-on");
-const muteOff = playerDiv.querySelector("#wmr-mixcloud-volume");
-const muteOn = playerDiv.querySelector("#wmr-mixcloud-volume-off");
-const progressBar = playerDiv.querySelector(".wmr-footer-progress-bar");
-const seekBar = playerDiv.querySelector(".wmr-footer-seek-bar");
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", (e) => {
@@ -99,11 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   router();
   initializePlayer();
-  getTracklist().then((tracklist) => {
-    loadTrack(tracklist[currentTrackIndex]);
-    // Other code that updates the UI with the current track info
-    // and sets up event listeners for the player controls
-  });
+
   audio.on("loadedmetadata", function () {
     // Code that runs when the metadata has loaded
     const duration = audio.duration;
@@ -127,7 +113,66 @@ document.addEventListener("DOMContentLoaded", () => {
 // };
 
 function initializePlayer() {
-  // Code that initializes the Mixcloud Player Widget
+  // Initialize the Mixcloud Player Widget
+  const audio = Mixcloud.PlayerWidget(
+    document.getElementById("wmr-audio-iframe")
+  );
+
+  // Wait for the audio to be ready before interacting with it
+  audio.ready.then(() => {
+    // Add event listeners to player controls
+    const playBtn = document.getElementById("wmr-mixcloud-play");
+    const pauseBtn = document.getElementById("wmr-mixcloud-pause");
+    const stopBtn = document.getElementById("wmr-mixcloud-stop");
+    const progressBar = document.getElementById("wmr-mixcloud-progress-bar");
+    const seekBar = document.getElementById("wmr-mixcloud-seek-bar");
+    const muteOff = document.getElementById("wmr-mixcloud-mute-off");
+    const muteOn = document.getElementById("wmr-mixcloud-mute-on");
+    const repeat = document.getElementById("wmr-mixcloud-repeat");
+    const repeatOn = document.getElementById("wmr-mixcloud-repeat-on");
+
+    // Add event listeners for player controls
+    playBtn.addEventListener("click", () => {
+      audio.play();
+    });
+
+    pauseBtn.addEventListener("click", () => {
+      audio.pause();
+    });
+
+    stopBtn.addEventListener("click", () => {
+      audio.seek(0);
+      audio.pause();
+    });
+
+    muteOff.addEventListener("click", () => {
+      audio.setVolume(0);
+    });
+
+    muteOn.addEventListener("click", () => {
+      audio.setVolume(1);
+    });
+
+    repeat.addEventListener("click", () => {
+      audio.setLoop(true);
+    });
+
+    repeatOn.addEventListener("click", () => {
+      audio.setLoop(false);
+    });
+
+    // Update progress bar and seek bar as track plays
+    audio.on("timeupdate", () => {
+      const currentTime = audio.getCurrentTime();
+      const duration = audio.getDuration();
+      const progress = (currentTime / duration) * 100;
+      progressBar.style.width = progress + "%";
+      seekBar.value = currentTime;
+    });
+  });
+
+  // Return the Mixcloud Player Widget
+  return audio;
 }
 
 function getTracklist() {

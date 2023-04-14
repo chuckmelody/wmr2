@@ -166,9 +166,11 @@ function initializePlayer() {
     };
 
     const seekRight = async () => {
+      // seekRightBtn.classList.add("d-none");
+      // seekRightBtnOn.classList.remove("d-none");
       const currentPosition = await audio.getPosition();
       const duration = await audio.getDuration();
-      const newPosition = Math.min(duration, currentPosition + seekStep); // add seekStep seconds
+      const newPosition = Math.min(duration, currentPosition + 10000); // add 10 seconds
       await audio.seek(newPosition);
     };
 

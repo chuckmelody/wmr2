@@ -58,30 +58,40 @@ const router = async () => {
   const view = new match.route.view(getParams(match));
 
   document.querySelector("#app").innerHTML = await view.getHtml();
-
-  // Get all the buttons
-  const buttons = document.querySelectorAll("#wmr-header-menu .headerMenu");
-  const mixcloudButton = document.querySelector("#wmr-mixcloud-btn");
-  const playerButton = document.querySelector("#player-button-mobile");
-  const playerDiv = document.querySelector("#player-div");
-  const playerClose = document.querySelector("#player-close");
-  const mixcloudBtnConRow = document.querySelector("#wmr-player-btns-con");
-  const audio = Mixcloud.PlayerWidget(
-    document.getElementById("wmr-audio-iframe")
-  );
-
-  openplayer(
-    buttons,
-    mixcloudButton,
-    playerButton,
-    playerDiv,
-    playerClose,
-    mixcloudBtnConRow,
-    audio
-  );
 };
 
 window.addEventListener("popstate", router);
+
+let audio;
+let currentTrackIndex = 90;
+let currentTrack = "";
+let isPlaying = false;
+let progressIntervalId = null;
+
+// Get all the buttons
+const buttons = document.querySelectorAll("#wmr-header-menu .headerMenu");
+const mixcloudButton = document.querySelector("#wmr-mixcloud-btn");
+const playerButton = document.querySelector("#player-button-mobile");
+const playerDiv = document.querySelector("#player-div");
+const playerClose = document.querySelector("#player-close");
+const mixcloudBtnConRow = document.querySelector("#wmr-player-btns-con");
+const playBtn = playerDiv.querySelector("#wmr-mixcloud-play");
+const pauseBtn = playerDiv.querySelector("#wmr-mixcloud-pause");
+const stopBtn = playerDiv.querySelector("#wmr-mixcloud-stop");
+const seekLeftBtn = playerDiv.querySelector("#wmr-mixcloud-seek-left");
+const currentTime = playerDiv.querySelector("#wmr-foot-player-currentTime");
+const wmrduration = playerDiv.querySelector("#wmr-foot-player-duration");
+const next = playerDiv.querySelector("#wmr-mixcloud-double-right");
+const seekRightBtn = playerDiv.querySelector("#wmr-mixcloud-bar-right");
+const repeat = playerDiv.querySelector("#wmr-mixcloud-repeat");
+const repeatOn = playerDiv.querySelector("#wmr-mixcloud-repeat-on");
+const muteOff = playerDiv.querySelector("#wmr-mixcloud-volume");
+const muteOn = playerDiv.querySelector("#wmr-mixcloud-volume-off");
+const progressBar = playerDiv.querySelector(".wmr-footer-progress-bar");
+const seekBar = playerDiv.querySelector(".wmr-footer-seek-bar");
+// const audio = Mixcloud.PlayerWidget(
+//   document.getElementById("wmr-audio-iframe")
+// );
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", (e) => {
@@ -92,7 +102,83 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   router();
+  initializePlayer();
+  getTracklist().then((tracklist) => {
+    loadTrack(tracklist[currentTrackIndex]);
+    // Other code that updates the UI with the current track info
+    // and sets up event listeners for the player controls
+  });
 });
+
+// // Get the tracks from the JSON server
+// const getTracklist = async () => {
+//   const response = await fetch("http://localhost:3000/songs");
+//   if (!response.ok) {
+//     throw new Error("Failed to fetch tracklist");
+//   }
+//   const data = await response.json();
+//   return data;
+// };
+
+function initializePlayer() {
+  // Code that initializes the Mixcloud Player Widget
+}
+
+function getTracklist() {
+  // Code that fetches the tracklist from the server
+}
+
+function loadTrack(track) {
+  // Code that loads a track into the player
+}
+
+function playTrack() {
+  // Code that plays the current track
+}
+
+function pauseTrack() {
+  // Code that pauses the current track
+}
+
+function stopTrack() {
+  // Code that stops the current track
+}
+
+function togglePlayPause() {
+  // Code that toggles between playing and pausing the current track
+}
+
+function toggleMute() {
+  // Code that toggles between muting and unmuting the player
+}
+
+function toggleRepeat() {
+  // Code that toggles between repeating and not repeating the current track
+}
+
+function updateTrackInfo(track) {
+  // Code that updates the track information on the player UI
+}
+
+function playNextTrack(tracklist) {
+  // Code that loads and plays the next track in the tracklist
+}
+
+function playPrevTrack(tracklist) {
+  // Code that loads and plays the previous track in the tracklist
+}
+
+// End
+
+// Open player
+openplayer(
+  buttons,
+  mixcloudButton,
+  playerButton,
+  playerDiv,
+  playerClose,
+  mixcloudBtnConRow
+);
 
 function openplayer(
   buttons,
@@ -100,50 +186,12 @@ function openplayer(
   playerButton,
   playerDiv,
   playerClose,
-  mixcloudBtnConRow,
-  audio
+  mixcloudBtnConRow
 ) {
   // open player
   mixcloudButton.addEventListener("click", function () {
     mixcloudPlayer(mixcloudBtnConRow);
-    playerDiv.classList.toggle("hidden");
-    if (!playerDiv.classList.contains("hidden")) {
-      let playBtn = playerDiv.querySelector("#wmr-mixcloud-play");
-      let pauseBtn = playerDiv.querySelector("#wmr-mixcloud-pause");
-      let stopBtn = playerDiv.querySelector("#wmr-mixcloud-stop");
-      let seekLeftBtn = playerDiv.querySelector("#wmr-mixcloud-seek-left");
-
-      let currentTime = playerDiv.querySelector("#wmr-foot-player-currentTime");
-      let wmrduration = playerDiv.querySelector("#wmr-foot-player-duration");
-      let next = playerDiv.querySelector("#wmr-mixcloud-double-right");
-      let seekRightBtn = playerDiv.querySelector("#wmr-mixcloud-bar-right");
-      let repeat = playerDiv.querySelector("#wmr-mixcloud-repeat");
-      let repeatOn = playerDiv.querySelector("#wmr-mixcloud-repeat-on");
-      let muteOff = playerDiv.querySelector("#wmr-mixcloud-volume");
-      let muteOn = playerDiv.querySelector("#wmr-mixcloud-volume-off");
-      let progressBar = playerDiv.querySelector(".wmr-footer-progress-bar");
-      let seekBar = playerDiv.querySelector(".wmr-footer-seek-bar");
-    }
   });
-
-  // Get the tracklist from the JSON server
-  const getTracklist = async () => {
-    const response = await fetch("http://localhost:3000/songs");
-    if (!response.ok) {
-      throw new Error("Failed to fetch tracklist");
-    }
-    const data = await response.json();
-    return data;
-  };
-
-  playerButton.addEventListener("click", function () {
-    playerDiv.classList.toggle("hidden");
-  });
-
-  playerClose.addEventListener("click", function () {
-    playerDiv.classList.toggle("hidden");
-  });
-
   // Loop through the buttons and add a click event listener to each one
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -162,116 +210,106 @@ function mixcloudPlayer(mixcloudBtnConRow) {
   mixcloudBtnConRow.innerHTML = `
   <div class="row" id="wmr-player-btns-con-row">
   <div class="col-md-4 d-flex justify-content-center align-items-center">
-  <div class="row mx-0 flex-nowrap" id="wmr-player-left-Bt-con">
-          <div class="col-md-3 p-0 text-center">
-              <button class="pad-button wmr-mixcloud-play" id="wmr-mixcloud-play">
-                  <img class="img-fluid pad-image" src="/static/img/wmr/pad_off.png">
-                  <span class="pad-text" id="wmr-mixcloud-play-img"><img
-                          src="/static/img/wmr/icons/play-fill.svg"></span>
-              </button>
-              <button class="pad-button wmr-mixcloud-pause d-none" id="wmr-mixcloud-pause">
-                  <img class="img-fluid pad-image" src="/static/img/wmr/pad_on.png">
-                  <span class="pad-text" id="wmr-mixcloud-pause-img"><img
-                          src="/static/img/wmr/icons/pause-fill.svg"></span>
-              </button>
-          </div>
-          <div class="col-md-3 p-0 text-center">
-              <button class="pad-button" id="wmr-mixcloud-stop">
-                  <img class="pad-image" src="/static/img/wmr/pad_off.png">
-                  <span class="pad-text"><img
-                          src="/static/img/wmr/icons/stop-fill.svg"></span>
-              </button>
-          </div>
-          <div class="col-md-3 p-0 text-center">
-              <button class="pad-button" id="wmr-mixcloud-seek-left">
-                  <img class="pad-image" src="/static/img/wmr/pad_off.png">
-                  <span class="pad-text"><img
-                          src="/static/img/wmr/icons/arrow-bar-left.svg"></span>
-              </button>
-          </div>
-          <div class="col-md-3 p-0 text-center">
-              <button class="pad-button" id="wmr-mixcloud-double-left">
-                  <img class="pad-image" src="/static/img/wmr/pad_off.png">
-                  <span class="pad-text"><img
-                          src="/static/img/wmr/icons/chevron-double-left.svg"></span>
-              </button>
-          </div>
-  </div>
+     <div class="row mx-0 flex-nowrap" id="wmr-player-left-Bt-con">
+        <div class="col-md-3 p-0 text-center">
+           <button class="pad-button wmr-mixcloud-play" id="wmr-mixcloud-play">
+           <img class="img-fluid pad-image" src="/static/img/wmr/pad_off.png">
+           <span class="pad-text" id="wmr-mixcloud-play-img"><img
+              src="/static/img/wmr/icons/play-fill.svg"></span>
+           </button>
+           <button class="pad-button wmr-mixcloud-pause d-none" id="wmr-mixcloud-pause">
+           <img class="img-fluid pad-image" src="/static/img/wmr/pad_on.png">
+           <span class="pad-text" id="wmr-mixcloud-pause-img"><img
+              src="/static/img/wmr/icons/pause-fill.svg"></span>
+           </button>
+        </div>
+        <div class="col-md-3 p-0 text-center">
+           <button class="pad-button" id="wmr-mixcloud-stop">
+           <img class="pad-image" src="/static/img/wmr/pad_off.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/stop-fill.svg"></span>
+           </button>
+        </div>
+        <div class="col-md-3 p-0 text-center">
+           <button class="pad-button" id="wmr-mixcloud-seek-left">
+           <img class="pad-image" src="/static/img/wmr/pad_off.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/arrow-bar-left.svg"></span>
+           </button>
+        </div>
+        <div class="col-md-3 p-0 text-center">
+           <button class="pad-button" id="wmr-mixcloud-double-left">
+           <img class="pad-image" src="/static/img/wmr/pad_off.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/chevron-double-left.svg"></span>
+           </button>
+        </div>
+     </div>
   </div>
   <div class="col-md-4 d-flex justify-content-center align-items-center">
-  <div class="d-flex justify-content-center align-items-center gap-2" id="wmr-player-center-info-con">
-  <img class="img-fluid pad-image rounded-1 mixcloud-cover-image" src="/static/img/wmr/covers/des.jpg" id="mixcloud-cover-image">
-</div>
-
-<div class="d-flex justify-content-center align-items-start flex-column" id="wmr-foot-player-info">
-
-  <div>
-    <h4 id="wmr-foot-player-title">Soul hits Vol 32</h4>
+     <div class="d-flex justify-content-center align-items-center gap-2" id="wmr-player-center-info-con">
+        <img class="img-fluid pad-image rounded-1 mixcloud-cover-image" src="/static/img/wmr/covers/des.jpg" id="mixcloud-cover-image">
+     </div>
+     <div class="d-flex justify-content-center align-items-start flex-column" id="wmr-foot-player-info">
+        <div>
+           <h4 id="wmr-foot-player-title">Soul hits Vol 32</h4>
+        </div>
+        <div id="wmr-foot-player-artist">
+           By: Chuck Melody
+        </div>
+        <div class="d-flex justify-content-between align-items-center w-100">
+           <div id="wmr-foot-player-currentTime">
+              0:00
+           </div>
+           <div id="wmr-foot-player-duration">
+              0:00
+           </div>
+        </div>
+     </div>
   </div>
-
-  <div id="wmr-foot-player-artist">
-    By: Chuck Melody
-  </div>
-
-  <div class="d-flex justify-content-between align-items-center w-100">
-    <div id="wmr-foot-player-currentTime">
-      0:00
-    </div>
-
-    <div id="wmr-foot-player-duration">
-      0:00
-    </div>
-  </div>
-
-</div>
-
-  </div>
-
-
-
   <div class="col-md-4 d-flex justify-content-center align-items-center">
-    <div class="row mx-0 flex-nowrap" id="wmr-player-right-Bt-con">
-      <div class="col-md-3 p-0 text-center">
-        <button class="pad-button" id="wmr-mixcloud-double-right">
-            <img class="img-fluid pad-image" src="/static/img/wmr/pad_off.png">
-            <span class="pad-text"><img
-                    src="/static/img/wmr/icons/chevron-double-right.svg"></span>
-        </button>
-      </div>
-          <div class="col-md-3 p-0 text-center">
-              <button class="pad-button" id="wmr-mixcloud-bar-right">
-                  <img class="pad-image" src="/static/img/wmr/pad_off.png">
-                  <span class="pad-text"><img
-                          src="/static/img/wmr/icons/arrow-bar-right.svg"></span>
-              </button>
-          </div>
-          <div class="col-md-3 p-0 text-center">
-              <button class="pad-button" id="wmr-mixcloud-repeat">
-                  <img class="pad-image" src="/static/img/wmr/pad_off.png">
-                  <span class="pad-text"><img
-                  src="/static/img/wmr/icons/arrow-repeat.svg"></span>
-              </button>
-              <button class="pad-button d-none" id="wmr-mixcloud-repeat-on">
-                  <img class="pad-image" src="/static/img/wmr/pad_on.png">
-                  <span class="pad-text"><img
-                  src="/static/img/wmr/icons/arrow-repeat-on.svg"></span>
-              </button>
-          </div>
-          <div class="col-md-3 p-0 text-center">
-              <button class="pad-button" id="wmr-mixcloud-volume">
-                  <img class="pad-image" src="/static/img/wmr/pad_off.png">
-                  <span class="pad-text"><img
-                  src="/static/img/wmr/icons/volume-up-fill.svg"></span>
-              </button>
-              <button class="pad-button d-none" id="wmr-mixcloud-volume-off">
-                  <img class="pad-image" src="/static/img/wmr/pad_on.png">
-                  <span class="pad-text"><img
-                  src="/static/img/wmr/icons/volume-mute-fill.svg"></span>
-              </button>
-          </div>
-  </div>
+     <div class="row mx-0 flex-nowrap" id="wmr-player-right-Bt-con">
+        <div class="col-md-3 p-0 text-center">
+           <button class="pad-button" id="wmr-mixcloud-double-right">
+           <img class="img-fluid pad-image" src="/static/img/wmr/pad_off.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/chevron-double-right.svg"></span>
+           </button>
+        </div>
+        <div class="col-md-3 p-0 text-center">
+           <button class="pad-button" id="wmr-mixcloud-bar-right">
+           <img class="pad-image" src="/static/img/wmr/pad_off.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/arrow-bar-right.svg"></span>
+           </button>
+        </div>
+        <div class="col-md-3 p-0 text-center">
+           <button class="pad-button" id="wmr-mixcloud-repeat">
+           <img class="pad-image" src="/static/img/wmr/pad_off.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/arrow-repeat.svg"></span>
+           </button>
+           <button class="pad-button d-none" id="wmr-mixcloud-repeat-on">
+           <img class="pad-image" src="/static/img/wmr/pad_on.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/arrow-repeat-on.svg"></span>
+           </button>
+        </div>
+        <div class="col-md-3 p-0 text-center">
+           <button class="pad-button" id="wmr-mixcloud-volume">
+           <img class="pad-image" src="/static/img/wmr/pad_off.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/volume-up-fill.svg"></span>
+           </button>
+           <button class="pad-button d-none" id="wmr-mixcloud-volume-off">
+           <img class="pad-image" src="/static/img/wmr/pad_on.png">
+           <span class="pad-text"><img
+              src="/static/img/wmr/icons/volume-mute-fill.svg"></span>
+           </button>
+        </div>
+     </div>
   </div>
 </div>
 
-  `;
+`;
 }

@@ -89,16 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   router();
   initializePlayer();
-
-  // Add event listeners to the Mixcloud player controls
-  const playBtn = document.getElementById("wmr-mixcloud-play");
-  const pauseBtn = document.getElementById("wmr-mixcloud-pause");
-  const stopBtn = document.getElementById("wmr-mixcloud-stop");
-  const seekBar = document.getElementById("wmr-mixcloud-seek-bar");
-  const muteOffBtn = document.getElementById("wmr-mixcloud-mute-off");
-  const muteOnBtn = document.getElementById("wmr-mixcloud-mute-on");
-  const repeatBtn = document.getElementById("wmr-mixcloud-repeat");
-  const repeatOnBtn = document.getElementById("wmr-mixcloud-repeat-on");
 });
 
 // // Get the tracks from the JSON server

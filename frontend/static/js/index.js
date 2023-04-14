@@ -175,6 +175,7 @@ function initializePlayer() {
 
     const startSeekRight = () => {
       seekIntervalRight = setInterval(handleSeekRight, 200);
+      handleSeekRight();
     };
 
     const stopSeek = (seekInterval, seekBtn, seekBtnOn) => {

@@ -95,25 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 let state = {
-  // audio: null,
-  // tracklist: [],
-  // currentTrackIndex: 0,
-  // currentTrack: null,
   isPlaying: false,
-  // progressIntervalId: null,
-  // playerDiv: null,
-  // playBtn: null,
-  // pauseBtn: null,
-  // stopBtn: null,
-  // progressBar: null,
-  // seekBar: null,
-  // muteOff: null,
-  // muteOn: null,
-  // repeat: null,
-  // repeatOn: null,
-  // wmrduration: null,
-  // currentTime: null,
-  // volumeControl: null
 };
 
 let currentTrackIndex = 86;
@@ -149,16 +131,6 @@ function openplayer(
       let progressBar = playerDiv.querySelector(".wmr-footer-progress-bar");
       let seekBar = playerDiv.querySelector(".wmr-footer-seek-bar");
 
-      // if (wmrPlaylist) {
-      //   // wmrPlaylist.textContent = "";
-      //   // wmrPlaylist.innerHTML = `<li class="text-white">Chuck</li>`;
-      //   console.log(wmrPlaylist);
-      // } else {
-      //   console.log("not there");
-      // }
-
-      //let progressIntervalId = null;
-
       audio.ready.then(function () {
         // Put code that interacts with the widget here
         // run your function here
@@ -169,16 +141,12 @@ function openplayer(
           audio,
           progressBar,
           seekBar
-          //progressIntervalId
         );
         playerStopbtn(stopBtn, pauseBtn, playBtn, audio);
         volueMuteControl(muteOff, muteOn);
         repeatControl(repeat, repeatOn);
         wnrDuration(audio, wmrduration, currentTime, progressBar, seekBar);
-        //wmrPrev(audio, prev);
 
-        // console.log("playerDiv is visible and runing playerBtnControl");
-        // console.log(audio);
         getTracklist().then((tracklist) => {
           currentTrack = tracklist[currentTrackIndex];
           audio.load(currentTrack.url);
@@ -268,7 +236,6 @@ function openplayer(
         tracklist &&
         tracklist
           .map((item, itemIndex) => {
-            //console.log(item);  headerMenu btn btn-brown btn-block my-2 py-1 nav-link
             return `
 <li class="Playlist-item item mb-3" itemIndex=${itemIndex}>
   <div class="thumbnail">
@@ -289,23 +256,7 @@ function openplayer(
 
       console.log(tracklist);
     }, 500);
-
-    // wmrPlaylist.innerHTML = `
-    // <h1>Chuck</h1>
-    // `;
   }
-
-  // audio.events.pause.on(pauseListener);
-  // function pauseListener() {
-  //   // This will be called whenever the widget is paused
-  //   isPlaying = false;
-  // }
-
-  // audio.events.ended.on(endedListener);
-  // function endedListener() {
-  //   // This will be called whenever the widget is paused
-  //   isPlaying = false;
-  // }
 
   playerButton.addEventListener("click", function () {
     playerDiv.classList.toggle("hidden");
@@ -345,11 +296,11 @@ function wnrDuration(audio, wmrduration, currentTime, progressBar, seekBar) {
 }
 
 function secondsToString(seconds) {
-  var numyears = Math.floor(seconds / 31536000);
-  var numdays = Math.floor((seconds % 31536000) / 86400);
-  var numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
-  var numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
-  var numseconds = (((seconds % 31536000) % 86400) % 3600) % 60;
+  let numyears = Math.floor(seconds / 31536000);
+  let numdays = Math.floor((seconds % 31536000) / 86400);
+  let numhours = Math.floor(((seconds % 31536000) % 86400) / 3600);
+  let numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
+  let numseconds = (((seconds % 31536000) % 86400) % 3600) % 60;
   return numhours + ":" + numminutes + ":" + numseconds + " ";
 }
 
@@ -362,33 +313,6 @@ function updateTimeSpan(seconds) {
     .toString()
     .padStart(2, "0")}:${finalSeconds.toString().padStart(2, "0")}`;
 }
-
-function seekControl(audio, progressBar, seekBar) {
-  // Create a function to update the seek bar and progress bar
-  // audio.getPosition().then(function (position) {
-  //   console.log(position);
-  //   // Calculate the progress as a percentage of the current position
-  //   const progress = (position / audio.currentDuration) * 100;
-  //   // Update the value of the progress bar
-  //   progressBar.style.width = progress + "%";
-  //   // Update the value of the seek bar
-  //   seekBar.value = position;
-  // });
-  // Attach an event listener to the seek bar
-  // seekBar.addEventListener("input", function () {
-  //   audio.seek(seekBar.value).then(function (allowed) {
-  //     if (!allowed) {
-  //       seekBar.value = audio.position;
-  //     }
-  //   });
-  // });
-}
-
-// function wmrPrev(audio, prev) {
-//   return new Promise((resolve, reject) => {
-//     resolve();
-//   });
-// }
 
 function repeatControl(repeat, repeatOn) {
   // Attach event listener to volume button
@@ -426,7 +350,6 @@ function playerbtnControl(
   progressBar,
   seekBar
 ) {
-  let progressIntervalId = "0";
   // Attach event listener to play button
 
   playBtn.addEventListener("click", () => {
@@ -435,11 +358,7 @@ function playerbtnControl(
     audio.play();
     audio.events.play.on(() => {
       state.isPlaying = true;
-      //console.log(isPlaying + "Playing");
     });
-
-    // Start updating the progress bar and store the interval ID
-    // progressIntervalId = startProgressUpdate(audio, progressBar, seekBar);
 
     playBtn.classList.add("d-none");
     pauseBtn.classList.remove("d-none");
@@ -454,8 +373,6 @@ function playerbtnControl(
 
     audio.events.pause.on(() => {
       state.isPlaying = false;
-      // console.log(isPlaying + "Paused");
-      // stopProgressUpdate(progressIntervalId); // Pass the interval ID to stopProgressUpdate
     });
 
     pauseBtn.classList.add("d-none");
@@ -464,26 +381,8 @@ function playerbtnControl(
 
   audio.events.ended.on(() => {
     state.isPlaying = false;
-    //console.log(isPlaying + "Ended");
   });
 }
-
-// Start updating the progress bar
-// Start updating the progress bar
-
-// function startProgressUpdate(audio, progressBar, seekBar, progressIntervalId) {
-//   progressIntervalId = setInterval(function () {
-//     // console.log(progressIntervalId);
-//     seekControl(audio, progressBar, seekBar);
-//   }, 1000);
-// }
-
-// Stop updating the progress bar
-// function stopProgressUpdate(progressIntervalId) {
-//   console.log(progressIntervalId);
-//   console.log("gogo");
-//   clearInterval(progressIntervalId);
-// }
 
 function playerStopbtn(stopBtn, pauseBtn, playBtn, audio) {
   // Stop button click event
@@ -500,33 +399,6 @@ function playerStopbtn(stopBtn, pauseBtn, playBtn, audio) {
       });
     }
   });
-}
-
-function loadSong(mix) {
-  //console.log(mix.tags[0].name);
-  //const mixTagDisplay = mix.tags[0].name;
-  //props.wmrGenreDPlay.innerText = `${mix.name}`;
-  //props.mixTitle.innerHTML = `${mix.name}`;
-  //props.mixTitlebase.innerHTML = `${mix.name}`;
-  //props.mixTagbase.innerHTML = `${mixTagDisplay}`;
-  //props.mixTagbasePlayer.innerHTML = `${mixTagDisplay}`;
-  //props.playCount.innerHTML = `${mix.play_count}`;
-  //props.playCountplayer.innerHTML = `${mix.play_count}`;
-  // props.wmraudio.setAttribute(
-  //   "src",
-  //   `https://www.mixcloud.com/widget/iframe/?hide_cover=1&autoplay=${autoplaySet}&feed=` +
-  //     mix.key
-  // );
-  //props.wmraudio.setAttribute("data-duration", `${mix.audio_length}`);
-  //props.mixImage.style.backgroundImage = `url('${mix.pictures.extra_large}')`;
-  //props.audio.events.ended.on(endedListener);
-  // props.seekbar.setAttribute("value", 0);
-  //props.seekbar.setAttribute("min", 0);
-  // props.seekbar.setAttribute("max", 0);
-  // getDurationFn();
-  //getPositionFn();
-  //toggleAudio();
-  // getmixsongs(wmrMixArray);
 }
 
 function mixcloudPlayer(mixcloudBtnConRow) {
@@ -647,4 +519,4 @@ function mixcloudPlayer(mixcloudBtnConRow) {
 
   `;
 }
-// Get Chucks Mixcloud from file
+

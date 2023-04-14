@@ -6,6 +6,7 @@
   --dark-color: #171717;
   --light-dark-color: #292929;
   --yellow-color-hover: #e6d69b;
+  --wmr-gold: #c19f56;
   /* --yellow-color: #cfc09f; */
   --yellow-color: rgb(222, 124, 64);
   --yellow-color-logo: #8d5b3c;
@@ -552,21 +553,22 @@ input[type="range"]#seek::-webkit-slider-thumb {
 } */
 
 .progress-container {
-  background: #fff;
+  background: #303132;
   border-radius: 5px;
   cursor: pointer;
-  margin: 10px 0;
-  height: 4px;
+  margin: 0 0;
+  height: 8px;
   width: 100%;
 }
 
 .progress {
-  background-color: #fe8daa;
-  border-radius: 5px;
+  background-color: Var(--yellow-color);
+  border-radius: 2px;
   height: 100%;
   width: 0%;
   transition: width 0.1s linear;
 }
+
 .wmr-footer-progress {
   position: absolute;
   left: 0;
@@ -644,6 +646,7 @@ input[type="range"]#seek::-webkit-slider-thumb {
   margin-left: 25px;
 }
 
+#wmr-mixcloud-stop img,
 #wmr-mixcloud-stop span img {
   pointer-events: none;
 }

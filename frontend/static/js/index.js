@@ -115,8 +115,8 @@ function initializePlayer() {
     const playBtn = document.getElementById("wmr-mixcloud-play");
     const pauseBtn = document.getElementById("wmr-mixcloud-pause");
     const stopBtn = document.getElementById("wmr-mixcloud-stop");
-    const progressBar = document.getElementById("wmr-footer-progress");
-    const seekBar = document.getElementById("wmr-mixcloud-seek-bar");
+    const progress = document.getElementById("progress");
+    const progressContainer = document.getElementById("progress-container");
     const muteOff = document.getElementById("wmr-mixcloud-volume-off");
     const muteOn = document.getElementById("wmr-mixcloud-volume");
     const repeat = document.getElementById("wmr-mixcloud-repeat");
@@ -152,15 +152,30 @@ function initializePlayer() {
       audio.setLoop(false);
     });
 
-    // // Update progress bar and seek bar as track plays
-    audio.events.progress.on(() => {
-      // const currentTime = audio.getPosition();
-      // const duration = audio.getDuration();
-      // const progress = (currentTime / duration) * 100;
-      // progressBar.style.width = progress + "%";
-      // seekBar.value = currentTime;
+    // Update progress bar and seek bar as track plays
+    audio.events.progress.on((position, duration) => {
+      const progressPercent = (position / duration) * 100;
+      progress.style.width = `${progressPercent}%`;
+    });
 
-      console.log(progressBar);
+    // Click on progress bar
+    progressContainer.addEventListener("click", setProgress);
+
+    // Set progress bar
+    function setProgress(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+
+      audio.getDuration().then(function (duration) {
+        // "position" is the current duration
+        const positionGet = (clickX / width) * duration;
+        audio.seek(positionGet);
+      });
+    }
+
+    audio.events.ended.on(() => {
+      progress.style.width = "0%";
+      seek.value = 0;
     });
   });
 

@@ -1,4 +1,4 @@
-const wmrTabListCon = () => {
+export const wmrTabListCon = () => {
   return `<div class="container mt-3">
   <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -55,5 +55,3 @@ const wmrTabListCon = () => {
 </div>
 `;
 };
-
-export default wmrTabListCon;

@@ -249,21 +249,6 @@ function initializePlayer() {
   return audio;
 }
 
-// Code that fetches the tracklist from the server
-async function getTracklist() {
-  try {
-    const response = await fetch("http://localhost:3000/songs");
-    if (!response.ok) {
-      throw new Error("Failed to fetch tracklist");
-    }
-    const tracklist = await response.json();
-    return tracklist;
-  } catch (error) {
-    console.error(error);
-    // Handle error case
-  }
-}
-
 function loadTrack(track) {
   // Code that loads a track into the player
 }

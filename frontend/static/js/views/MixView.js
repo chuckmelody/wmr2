@@ -1,7 +1,6 @@
 import AbstractView from "./AbstractView.js";
 import wmrTabListCon from "./Module/TabsListCon.js";
-
-export default class extends AbstractView {
+export default class MixView extends AbstractView {
   constructor(params) {
     super(params);
     this.setTitle("MixView");
@@ -15,7 +14,7 @@ export default class extends AbstractView {
             <div class="col-sm-12 col-md-4">
               <div class="playlist">
                 <div class="py-5" id="playlist-modal">
-                  house
+                  Lords house
                 </div>
               </div>
             </div>

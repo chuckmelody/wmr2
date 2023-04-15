@@ -1,5 +1,5 @@
 import AbstractView from "./AbstractView.js";
-import { wmrTabListCon } from "./Module/TabsListCon.js";
+import wmrTabListCon from "./Module/TabsListCon.js";
 
 export default class extends AbstractView {
   constructor(params) {
@@ -38,10 +38,16 @@ export default class extends AbstractView {
   async afterRender() {
     const mixcloudButton = document.querySelector("#wmr-mixcloud-btn");
     const wmrtabsListContainer = document.querySelector("#contentb");
-    console.log("render run");
+
     mixcloudButton.addEventListener("click", function () {
-      console.log("render run");
       wmrtabsListContainer.innerHTML = wmrTabListCon();
     });
+  }
+
+  async render() {
+    const html = await this.getHtml();
+    this.container.innerHTML = html;
+    await this.afterRender();
+    return;
   }
 }

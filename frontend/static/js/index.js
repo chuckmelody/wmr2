@@ -197,22 +197,6 @@ function initializePlayer() {
       clearInterval(seekRightIntervalId);
     });
 
-    // seekLeftBtn.addEventListener("mousedown", () => {
-    //   seekIntervalLeft = setInterval(async () => {
-    //     seekLeftBtn.classList.add("d-none");
-    //     seekLeftBtnOn.classList.remove("d-none");
-    //     const currentPosition = await audio.getPosition();
-    //     const newPosition = Math.max(0, currentPosition - 10); // subtract 10 seconds
-    //     await audio.seek(newPosition);
-    //   }, 200); // seek every 200ms
-    // });
-
-    // seekLeftBtnOn.addEventListener("mouseup", () => {
-    //   seekLeftBtn.classList.remove("d-none");
-    //   seekLeftBtnOn.classList.add("d-none");
-    //   clearInterval(seekIntervalLeft);
-    // });
-
     muteOff.addEventListener("click", () => {
       audio.setVolume(0);
     });
@@ -250,18 +234,31 @@ function initializePlayer() {
       });
     }
 
-    // audio.events.ended.on(() => {
-    //   progress.style.width = "0%";
-    //   seek.value = 0;
-    // });
+    audio.events.ended.on(() => {
+      progress.style.width = "0%";
+      seek.value = 0;
+      playBtn.classList.remove("d-none");
+      pauseBtn.classList.add("d-none");
+    });
   });
 
   // Return the Mixcloud Player Widget
   return audio;
 }
 
-function getTracklist() {
-  // Code that fetches the tracklist from the server
+// Code that fetches the tracklist from the server
+async function getTracklist() {
+  try {
+    const response = await fetch("http://localhost:3000/songs");
+    if (!response.ok) {
+      throw new Error("Failed to fetch tracklist");
+    }
+    const tracklist = await response.json();
+    return tracklist;
+  } catch (error) {
+    console.error(error);
+    // Handle error case
+  }
 }
 
 function loadTrack(track) {

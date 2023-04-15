@@ -70,6 +70,7 @@ let progressIntervalId = null;
 // Get all the buttons
 const buttons = document.querySelectorAll("#wmr-header-menu .headerMenu");
 const mixcloudButton = document.querySelector("#wmr-mixcloud-btn");
+
 const playerButton = document.querySelector("#player-button-mobile");
 const playerDiv = document.querySelector("#player-div");
 const playerClose = document.querySelector("#player-close");

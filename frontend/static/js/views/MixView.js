@@ -4,18 +4,18 @@ import wmrTabListCon from "./Module/TabsListCon.js";
 export default class extends AbstractView {
   constructor(params) {
     super(params);
-    this.setTitle("Mix");
+    this.setTitle("MixView");
   }
 
   async getHtml() {
     return `
       <section>
-        <div class="container-fluid">
+        <div class="container-fluid" id="test">
           <div class="row">
             <div class="col-sm-12 col-md-4">
               <div class="playlist">
                 <div class="py-5" id="playlist-modal">
-                
+                  house
                 </div>
               </div>
             </div>
@@ -33,11 +33,5 @@ export default class extends AbstractView {
         </div>
       </section>
     `;
-  }
-  async afterRender() {
-    // Add any additional content or event listeners here
-    const thrh = document.querySelector("#playlist-modal");
-    thrh.innerHTML = "";
-    thrh.innerHTML = wmrTabListCon();
   }
 }

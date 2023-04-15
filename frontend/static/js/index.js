@@ -3,6 +3,7 @@ import Posts from "./views/Posts.js";
 import PostView from "./views/PostView.js";
 import Settings from "./views/Settings.js";
 import Mixs from "./views/Mixs.js";
+import MixView from "./views/MixView.js";
 import Audio from "./views/Audio.js";
 
 const pathToRegex = (path) =>
@@ -33,6 +34,7 @@ const router = async () => {
     { path: "/posts/:id", view: PostView },
     { path: "/settings", view: Settings },
     { path: "/mixs", view: Mixs },
+    { path: "/mixs/:id", view: MixView },
     { path: "/audio", view: Audio },
   ];
 

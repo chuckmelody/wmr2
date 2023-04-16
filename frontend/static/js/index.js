@@ -106,6 +106,8 @@ document.addEventListener("DOMContentLoaded", () => {
 // };
 
 function initializePlayer() {
+  // Define the player elements object
+  const playerElements = {};
   // Initialize the Mixcloud Player Widget
   const audio = Mixcloud.PlayerWidget(
     document.getElementById("wmr-audio-iframe")
@@ -273,15 +275,27 @@ function callFunctionAndSaveState() {
   history.pushState(functionState, null, null);
 }
 
+let playerElements;
+
 function getPlayList() {
   setTimeout(function () {
     const playlistItems = document.querySelector("#playlist-items");
 
-    const playerElements = {
-      titleElem: document.getElementById("wmr-foot-player-title"),
-      artistElem: document.getElementById("wmr-foot-player-artist"),
-      coverImageElem: document.getElementById("mixcloud-cover-image"),
-      durationElem: document.getElementById("wmr-foot-player-duration"),
+    // const playerElements = {
+    //   titleElem: document.getElementById("wmr-foot-player-title"),
+    //   artistElem: document.getElementById("wmr-foot-player-artist"),
+    //   coverImageElem: document.getElementById("mixcloud-cover-image"),
+    //   durationElem: document.getElementById("wmr-foot-player-duration"),
+    // };
+
+    // Define a helper function to get references to the player UI elements
+    const getPlayerElements = () => {
+      const titleElem = document.getElementById("wmr-foot-player-title");
+      const artistElem = document.getElementById("wmr-foot-player-artist");
+      const coverImageElem = document.getElementById("mixcloud-cover-image");
+      const durationElem = document.getElementById("wmr-foot-player-duration");
+
+      return { titleElem, artistElem, coverImageElem, durationElem };
     };
 
     // Define a function to fetch the data
@@ -301,6 +315,8 @@ function getPlayList() {
 
       //loadTrack(trackData[0], playerElements);
     });
+
+    playerElements = getPlayerElements();
 
     // Call the fetchData() function to fetch data and display it on the initial page load
     (async function () {
@@ -353,31 +369,56 @@ function loadplaylistPlay(playlistItems, mixs, playerElements) {
     //console.log(wmrPlaylistIndex);
   });
 }
-// Re do send fetch to array
-const loadTrack = async (trackIndex, mixs, playerElements) => {
-  const { titleElem, coverImageElem } = playerElements;
-  console.log(titleElem);
-  // Get the track from the tracks array
-  const track = trackData[trackIndex];
 
-  titleElem.innerText = track.name;
+const loadTrack = async (track) => {
+  // Set the track title in the player UI
+  playerElements.titleElem.innerText = track.name;
+
   // Load the track into the player
-  await audio.load(track.url, true);
+  await audio.load(track.url);
+
   // Update the track information on the player UI
   updateTrackInfo(track, playerElements);
+
   // Set the cover image
-  coverImageElem.src = track.pictures.medium;
+  playerElements.coverImageElem.src = track.pictures.medium;
+
+  // Set the duration
+  playerElements.durationElem.innerText = formatDuration(track.audio_length);
+};
+const updateTrackInfo = (track, playerElements) => {
+  // Set the artist name in the player UI
+  playerElements.artistElem.innerText = track.user.name;
+
+  // Set the duration in the player UI
+  playerElements.durationElem.innerText = formatDuration(track.audio_length);
 };
 
-// Define a function to update the track information on the player UI
-const updateTrackInfo = (track, playerElements) => {
-  const { artistElem, durationElem, coverImageElem, titleElem } =
-    playerElements;
-  artistElem.innerText = track.user.name;
-  durationElem.innerText = formatDuration(track.audio_length);
-  coverImageElem.src = track.pictures.medium;
-  titleElem = track.name;
-};
+// Re do send fetch to array
+// const loadTrack = async (trackIndex, mixs, playerElements) => {
+//   const { titleElem, coverImageElem } = playerElements;
+//   console.log(titleElem);
+//   // Get the track from the tracks array
+//   const track = trackData[trackIndex];
+
+//   titleElem.innerText = track.name;
+//   // Load the track into the player
+//   await audio.load(track.url, true);
+//   // Update the track information on the player UI
+//   updateTrackInfo(track, playerElements);
+//   // Set the cover image
+//   coverImageElem.src = track.pictures.medium;
+// };
+
+// // Define a function to update the track information on the player UI
+// const updateTrackInfo = (track, playerElements) => {
+//   const { artistElem, durationElem, coverImageElem, titleElem } =
+//     playerElements;
+//   artistElem.innerText = track.user.name;
+//   durationElem.innerText = formatDuration(track.audio_length);
+//   coverImageElem.src = track.pictures.medium;
+//   titleElem = track.name;
+// };
 
 // Define a helper function to format duration in hours, minutes, and seconds
 const formatDuration = (duration) => {

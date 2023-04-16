@@ -249,6 +249,55 @@ function initializePlayer() {
   return audio;
 }
 
+// Define a function to handle popstate events
+function handlePopState(event) {
+  // Retrieve the saved state data from the event object
+  const savedState = event.state;
+
+  // Call your function with the saved state data
+  getPlayList(savedState);
+}
+
+// Attach the handlePopState function to the popstate event
+window.addEventListener("popstate", handlePopState);
+
+// Call your function and save its state
+function callFunctionAndSaveState() {
+  // Call your function and retrieve the function state
+  const functionState = getPlayList();
+
+  // Save the function state in the browser history
+  history.pushState(functionState, null, null);
+}
+
+function getPlayList() {
+  const playlistItems = document.querySelector("#playlist-items");
+  console.log(playlistItems);
+  // Define a function to fetch the data
+  async function fetchData() {
+    const response = await fetch("http://localhost:3000/songs");
+    const data = await response.json();
+    return data;
+  }
+
+  // Use the fetchData() function to fetch data and display it on each page navigation
+  window.addEventListener("popstate", async function () {
+    const data = await fetchData();
+    // Do something with the data, such as displaying it on the page
+    console.log(data);
+  });
+
+  // Call the fetchData() function to fetch data and display it on the initial page load
+  (async function () {
+    const data = await fetchData();
+    // Do something with the data, such as displaying it on the page
+    console.log(data);
+  })();
+}
+
+function loadplaylist() {
+  // Code that loads a track into the player
+}
 function loadTrack(track) {
   // Code that loads a track into the player
 }
@@ -311,6 +360,7 @@ function openplayer(
 ) {
   // open player
   mixcloudButton.addEventListener("click", function () {
+    callFunctionAndSaveState();
     mixcloudPlayer(mixcloudBtnConRow);
   });
   // Loop through the buttons and add a click event listener to each one

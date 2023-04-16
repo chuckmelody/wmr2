@@ -354,7 +354,7 @@ function loadplaylistPlay(playlistItems, mixs, playerElements) {
   });
 }
 // Re do send fetch to array
-const loadTrack = async (trackIndex, mix, playerElements) => {
+const loadTrack = async (trackIndex, mixs, playerElements) => {
   const { titleElem, coverImageElem } = playerElements;
   console.log(titleElem);
   // Get the track from the tracks array

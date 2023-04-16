@@ -17,10 +17,10 @@ const wmrTabListCon = () => {
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="playlist" role="tabpanel" aria-labelledby="playlist-tab">
-      <div class="card">
+      <div class="card bg-transparent">
         <div class="card-body">
           <h5 class="card-title">Playlist</h5>
-          <ul id="playlist-items" class="list-group">
+          <ul id="playlist-items" class="list-group wmr-plistUL">
           </ul>
         </div>
       </div>

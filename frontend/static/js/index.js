@@ -271,28 +271,55 @@ function callFunctionAndSaveState() {
 }
 
 function getPlayList() {
-  const playlistItems = document.querySelector("#playlist-items");
+  setTimeout(function () {
+    const playlistItems = document.querySelector("#playlist-items");
+
+    // Define a function to fetch the data
+    async function fetchData() {
+      const response = await fetch("http://localhost:3000/songs");
+      const data = await response.json();
+      return data;
+    }
+
+    // Use the fetchData() function to fetch data and display it on each page navigation
+    window.addEventListener("popstate", async function () {
+      const data = await fetchData();
+      // Do something with the data, such as displaying it on the page
+      console.log(data);
+    });
+
+    // Call the fetchData() function to fetch data and display it on the initial page load
+    (async function () {
+      const data = await fetchData();
+      // Do something with the data, such as displaying it on the page
+      loadMixPlaylist(data, playlistItems);
+      // console.log(data);
+    })();
+  }, 100);
+}
+
+function loadMixPlaylist(mixs, playlistItems) {
   console.log(playlistItems);
-  // Define a function to fetch the data
-  async function fetchData() {
-    const response = await fetch("http://localhost:3000/songs");
-    const data = await response.json();
-    return data;
-  }
+  // Code that loads a track into the player
+  playlistItems.innerHTML =
+    mixs &&
+    mixs.map((mix, itemIndex) => {
+      return `
+    <li class="Playlist-item item mb-3" itemIndex=${itemIndex}>
+      <div class="thumbnail">
+        <img loading="lazy" itemIndex=${itemIndex} class="img-fluid "src=${mix.pictures.thumbnail} alt=${mix.name} />
 
-  // Use the fetchData() function to fetch data and display it on each page navigation
-  window.addEventListener("popstate", async function () {
-    const data = await fetchData();
-    // Do something with the data, such as displaying it on the page
-    console.log(data);
-  });
-
-  // Call the fetchData() function to fetch data and display it on the initial page load
-  (async function () {
-    const data = await fetchData();
-    // Do something with the data, such as displaying it on the page
-    console.log(data);
-  })();
+      </div>
+      <div class="wmrPlaylistdetails">
+        <p class="wmr-playlist-Title mb-0 text-white text-start">${mix.name}</p>
+        <p class="wmr-playlist-By mb-0 text-light text-start fs-7">By: Chuck Melody</p>
+      </div>
+      <div class="ms-auto">
+        <p class="mb-0 text-white"><img class="img-fluid" src="../static/img/wmr/three-dots-vertical.svg" /></p>
+      </div>
+    </li>
+    `;
+    });
 }
 
 function loadplaylist() {

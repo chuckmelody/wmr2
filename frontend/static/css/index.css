@@ -684,6 +684,22 @@ ul#playlist-tracks .thumbnail img {
   height: 100%;
 }
 
+.wmr-plistUL li.item {
+  display: flex;
+  gap: 10px;
+}
+
+.wmr-plistUL li.item .thumbnail {
+  max-width: 50px;
+  max-height: 50px;
+  overflow: hidden;
+}
+
+.wmr-plistUL li.item .thumbnail img {
+  width: 100%;
+  height: 100%;
+}
+
 /* #wmr-buttonsCon {
   background-image: url("/static/img/wmr/buttonsbackpanel.png");
   background-size: contain;

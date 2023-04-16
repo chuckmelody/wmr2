@@ -104,10 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
 //   const data = await response.json();
 //   return data;
 // };
+let playerElements;
 
 function initializePlayer() {
-  // Define the player elements object
-  const playerElements = {};
   // Initialize the Mixcloud Player Widget
   const audio = Mixcloud.PlayerWidget(
     document.getElementById("wmr-audio-iframe")
@@ -275,27 +274,15 @@ function callFunctionAndSaveState() {
   history.pushState(functionState, null, null);
 }
 
-let playerElements;
-
 function getPlayList() {
   setTimeout(function () {
     const playlistItems = document.querySelector("#playlist-items");
 
-    // const playerElements = {
-    //   titleElem: document.getElementById("wmr-foot-player-title"),
-    //   artistElem: document.getElementById("wmr-foot-player-artist"),
-    //   coverImageElem: document.getElementById("mixcloud-cover-image"),
-    //   durationElem: document.getElementById("wmr-foot-player-duration"),
-    // };
-
-    // Define a helper function to get references to the player UI elements
-    const getPlayerElements = () => {
-      const titleElem = document.getElementById("wmr-foot-player-title");
-      const artistElem = document.getElementById("wmr-foot-player-artist");
-      const coverImageElem = document.getElementById("mixcloud-cover-image");
-      const durationElem = document.getElementById("wmr-foot-player-duration");
-
-      return { titleElem, artistElem, coverImageElem, durationElem };
+    playerElements = {
+      titleElem: document.getElementById("wmr-foot-player-title"),
+      artistElem: document.getElementById("wmr-foot-player-artist"),
+      coverImageElem: document.getElementById("mixcloud-cover-image"),
+      durationElem: document.getElementById("wmr-foot-player-duration"),
     };
 
     // Define a function to fetch the data
@@ -311,26 +298,23 @@ function getPlayList() {
       trackData = [...data]; // Push the data to the trackData array
       // Do something with the data, such as displaying it on the page
 
-      loadMixPlaylist(trackData, playlistItems, playerElements);
-
+      loadMixPlaylist(trackData, playlistItems);
       //loadTrack(trackData[0], playerElements);
     });
-
-    playerElements = getPlayerElements();
 
     // Call the fetchData() function to fetch data and display it on the initial page load
     (async function () {
       const data = await fetchData();
       trackData = [...data]; // Push the data to the trackData array
       // Do something with the data, such as displaying it on the page
-      loadMixPlaylist(trackData, playlistItems, playerElements);
-      loadTrack(82, playerElements);
+      loadMixPlaylist(trackData, playlistItems);
+      loadTrack(82);
       //console.log(data[0]);
     })();
   }, 100);
 }
 
-function loadMixPlaylist(mixs, playlistItems, playerElements) {
+function loadMixPlaylist(mixs, playlistItems) {
   console.log(playlistItems);
   // Code that loads a track into the player
   playlistItems.innerHTML =
@@ -352,73 +336,44 @@ function loadMixPlaylist(mixs, playlistItems, playerElements) {
     </li>
     `;
     });
-  loadplaylistPlay(playlistItems, mixs, playerElements);
+  loadplaylistPlay(playlistItems, mixs);
 }
 
-function loadplaylistPlay(playlistItems, mixs, playerElements) {
+function loadplaylistPlay(playlistItems, mixs) {
   // Code that loads a track into the player
 
   playlistItems.addEventListener("click", function (e) {
-    // const playListIndex = playlistItems.getAttribute("data-index");
-    //console.log(e.target.getAttribute("data-index"));
-    //console.log(e.srcElement.dataset.index);
     let wmrPlaylistIndex = e.srcElement.dataset.index;
-    console.log(playerElements);
-    loadTrack(wmrPlaylistIndex, mixs, playerElements);
-
-    //console.log(wmrPlaylistIndex);
+    loadTrack(wmrPlaylistIndex, mixs);
   });
 }
+// Re do send fetch to array
+const loadTrack = async (trackIndex, mix) => {
+  // Get the track from the tracks array
+  const track = trackData[trackIndex];
 
-const loadTrack = async (track) => {
-  // Set the track title in the player UI
+  console.log(track.name);
+  console.log(playerElements);
+
   playerElements.titleElem.innerText = track.name;
+
 
   // Load the track into the player
   await audio.load(track.url);
-
   // Update the track information on the player UI
-  updateTrackInfo(track, playerElements);
-
+  updateTrackInfo(track);
   // Set the cover image
   playerElements.coverImageElem.src = track.pictures.medium;
-
-  // Set the duration
-  playerElements.durationElem.innerText = formatDuration(track.audio_length);
 };
-const updateTrackInfo = (track, playerElements) => {
-  // Set the artist name in the player UI
+
+// Define a function to update the track information on the player UI
+const updateTrackInfo = (track) => {
+  playerElements.artistElem.innerText;
   playerElements.artistElem.innerText = track.user.name;
-
-  // Set the duration in the player UI
   playerElements.durationElem.innerText = formatDuration(track.audio_length);
+  playerElements.coverImageElem.src = track.pictures.medium;
+  playerElements.titleElem = track.name;
 };
-
-// Re do send fetch to array
-// const loadTrack = async (trackIndex, mixs, playerElements) => {
-//   const { titleElem, coverImageElem } = playerElements;
-//   console.log(titleElem);
-//   // Get the track from the tracks array
-//   const track = trackData[trackIndex];
-
-//   titleElem.innerText = track.name;
-//   // Load the track into the player
-//   await audio.load(track.url, true);
-//   // Update the track information on the player UI
-//   updateTrackInfo(track, playerElements);
-//   // Set the cover image
-//   coverImageElem.src = track.pictures.medium;
-// };
-
-// // Define a function to update the track information on the player UI
-// const updateTrackInfo = (track, playerElements) => {
-//   const { artistElem, durationElem, coverImageElem, titleElem } =
-//     playerElements;
-//   artistElem.innerText = track.user.name;
-//   durationElem.innerText = formatDuration(track.audio_length);
-//   coverImageElem.src = track.pictures.medium;
-//   titleElem = track.name;
-// };
 
 // Define a helper function to format duration in hours, minutes, and seconds
 const formatDuration = (duration) => {

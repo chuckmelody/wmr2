@@ -249,6 +249,9 @@ function initializePlayer() {
   return audio;
 }
 
+// Initialize an empty array to store the track data
+let trackData = [];
+
 // Define a function to handle popstate events
 function handlePopState(event) {
   // Retrieve the saved state data from the event object
@@ -274,6 +277,13 @@ function getPlayList() {
   setTimeout(function () {
     const playlistItems = document.querySelector("#playlist-items");
 
+    const playerElements = {
+      titleElem: document.getElementById("wmr-foot-player-title"),
+      artistElem: document.getElementById("wmr-foot-player-artist"),
+      coverImageElem: document.getElementById("mixcloud-cover-image"),
+      durationElem: document.getElementById("wmr-foot-player-duration"),
+    };
+
     // Define a function to fetch the data
     async function fetchData() {
       const response = await fetch("http://localhost:3000/songs");
@@ -284,30 +294,36 @@ function getPlayList() {
     // Use the fetchData() function to fetch data and display it on each page navigation
     window.addEventListener("popstate", async function () {
       const data = await fetchData();
+      trackData = [...data]; // Push the data to the trackData array
       // Do something with the data, such as displaying it on the page
-      console.log(data);
+
+      loadMixPlaylist(trackData, playlistItems, playerElements);
+
+      //loadTrack(trackData[0], playerElements);
     });
 
     // Call the fetchData() function to fetch data and display it on the initial page load
     (async function () {
       const data = await fetchData();
+      trackData = [...data]; // Push the data to the trackData array
       // Do something with the data, such as displaying it on the page
-      loadMixPlaylist(data, playlistItems);
-      // console.log(data);
+      loadMixPlaylist(trackData, playlistItems, playerElements);
+      loadTrack(82, playerElements);
+      //console.log(data[0]);
     })();
   }, 100);
 }
 
-function loadMixPlaylist(mixs, playlistItems) {
+function loadMixPlaylist(mixs, playlistItems, playerElements) {
   console.log(playlistItems);
   // Code that loads a track into the player
   playlistItems.innerHTML =
     mixs &&
     mixs.map((mix, itemIndex) => {
       return `
-    <li class="Playlist-item item mb-3" itemIndex=${itemIndex}>
+    <li class="Playlist-item item mb-3" data-index=${itemIndex}>
       <div class="thumbnail">
-        <img loading="lazy" itemIndex=${itemIndex} class="img-fluid "src=${mix.pictures.thumbnail} alt=${mix.name} />
+        <img loading="lazy" data-index=${itemIndex} class="img-fluid "src=${mix.pictures.thumbnail} alt=${mix.name} />
 
       </div>
       <div class="wmrPlaylistdetails">
@@ -320,14 +336,65 @@ function loadMixPlaylist(mixs, playlistItems) {
     </li>
     `;
     });
+  loadplaylistPlay(playlistItems, mixs, playerElements);
 }
 
-function loadplaylist() {
+function loadplaylistPlay(playlistItems, mixs, playerElements) {
   // Code that loads a track into the player
+
+  playlistItems.addEventListener("click", function (e) {
+    // const playListIndex = playlistItems.getAttribute("data-index");
+    //console.log(e.target.getAttribute("data-index"));
+    //console.log(e.srcElement.dataset.index);
+    let wmrPlaylistIndex = e.srcElement.dataset.index;
+    console.log(playerElements);
+    loadTrack(wmrPlaylistIndex, mixs, playerElements);
+
+    //console.log(wmrPlaylistIndex);
+  });
 }
-function loadTrack(track) {
-  // Code that loads a track into the player
-}
+// Re do send fetch to array
+const loadTrack = async (trackIndex, mix, playerElements) => {
+  const { titleElem, coverImageElem } = playerElements;
+  console.log(titleElem);
+  // Get the track from the tracks array
+  const track = trackData[trackIndex];
+
+  titleElem.innerText = track.name;
+  // Load the track into the player
+  await audio.load(track.url, true);
+  // Update the track information on the player UI
+  updateTrackInfo(track, playerElements);
+  // Set the cover image
+  coverImageElem.src = track.pictures.medium;
+};
+
+// Define a function to update the track information on the player UI
+const updateTrackInfo = (track, playerElements) => {
+  const { artistElem, durationElem, coverImageElem, titleElem } =
+    playerElements;
+  artistElem.innerText = track.user.name;
+  durationElem.innerText = formatDuration(track.audio_length);
+  coverImageElem.src = track.pictures.medium;
+  titleElem = track.name;
+};
+
+// Define a helper function to format duration in hours, minutes, and seconds
+const formatDuration = (duration) => {
+  const hours = Math.floor(duration / 3600);
+  const minutes = Math.floor((duration % 3600) / 60);
+  const seconds = Math.floor(duration % 60);
+
+  let formattedDuration = "";
+  if (hours > 0) {
+    formattedDuration += `${hours}:`;
+  }
+  formattedDuration += `${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
+
+  return formattedDuration;
+};
 
 function playTrack() {
   // Code that plays the current track
@@ -353,9 +420,9 @@ function toggleRepeat() {
   // Code that toggles between repeating and not repeating the current track
 }
 
-function updateTrackInfo(track) {
-  // Code that updates the track information on the player UI
-}
+// function updateTrackInfo(track) {
+//   // Code that updates the track information on the player UI
+// }
 
 function playNextTrack(tracklist) {
   // Code that loads and plays the next track in the tracklist

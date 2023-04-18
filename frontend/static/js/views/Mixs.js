@@ -19,40 +19,45 @@ export default class extends AbstractView {
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 col-md-4">
-            <div class="py-5" id="contentb">
-              <div id="wmrNowPlayDp" class="row row-cols-3 row-cols-md-3 g-3 mx-auto">
-                <div class="col">
-                  <img src="https://via.placeholder.com/150" class="img-fluid" alt="Placeholder">
-                </div>
-                <div class="col">
-                  <img src="https://via.placeholder.com/150" class="img-fluid" alt="Placeholder">
-                </div>
-                <div class="col">
-                  <img src="https://via.placeholder.com/150" class="img-fluid" alt="Placeholder">
-                </div>
+            <div class="col-sm-12 col-md-4 mt-5 px-5" id="wmrNowPlayDp">
 
-                <div id="wmrSliderVolConleft">
-                <div class="mb-3" id="wmrVolNum">0</div>
-                <div class="col wmrFadScale">
-                
-                  <img src="./static/img/mixdesk/fader_slot.png" class="img-fluid" alt="faderFill">
-                  <div class="vertical-range-container">
-                    <input id="leftVolSilde" type="range" min="0" max="10" value="0" class="vertical-range">
-                    
-                  </div>
-                </div>
-                </div>
+            <div class="d-flex justify-content-between text-center  mb-3">
+            <div>
+            Left
+            </div>
+            <div>
+            Buttons
+            </div>
+            <div>
+            Right
+            </div>
+            </div>
 
 
-                <div class="col">
-                  <img src="https://via.placeholder.com/150" class="img-fluid" alt="Placeholder">
-                </div>
-                <div class="col wmrFadScale">
-                <img src="./static/img/mixdesk/fader_slot.png" class="img-fluid" alt="faderFill">
+
+            <div class="row d-flex justify-content-between text-center">
+            <div class="col-sm-12 col-md-4 wmrVolDarkBG py-4">
+              <div class="wmrFadScaleLeft">
+              <div class="vertical-range-container">
+                   <input id="leftVolSilde" type="range" min="0" max="10" value="0" class="vertical-range">
                 </div>
               </div>
             </div>
+            <div class="col-sm-12 col-md-4">
+              <div>
+              Center
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-4 wmrVolDarkBG py-4">
+              <div Class="wmrFadScaleRight">
+              <div class="vertical-range-container">
+                   <input id="rightVolSilde" type="range" min="0" max="10" value="0" class="vertical-range">
+                </div>
+              </div>
+            </div>
+            </div>
+
+
           </div>
           
             <div class="col-12 col-md-4">

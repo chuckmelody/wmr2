@@ -79,7 +79,6 @@ const playerClose = document.querySelector("#player-close");
 const mixcloudBtnConRow = document.querySelector("#wmr-player-btns-con");
 const currentTime = playerDiv.querySelector("#wmr-foot-player-currentTime");
 const wmrduration = playerDiv.querySelector("#wmr-foot-player-duration");
-const next = playerDiv.querySelector("#wmr-mixcloud-double-right");
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", (e) => {
@@ -105,6 +104,9 @@ document.addEventListener("DOMContentLoaded", () => {
 //   return data;
 // };
 let playerElements;
+let trackData = [];
+let TrackIndex = 83;
+let wmrAutoPlay = "true";
 
 function initializePlayer() {
   // Initialize the Mixcloud Player Widget
@@ -130,6 +132,10 @@ function initializePlayer() {
     const muteOn = document.getElementById("wmr-mixcloud-volume");
     const repeat = document.getElementById("wmr-mixcloud-repeat");
     const repeatOn = document.getElementById("wmr-mixcloud-repeat-on");
+    const next = playerDiv.querySelector("#wmr-mixcloud-double-right");
+    const prev = playerDiv.querySelector("#wmr-mixcloud-double-left");
+    const leftVolSilde = document.querySelector("#leftVolSilde");
+    const wmrVolNum = document.querySelector("#wmrVolNum");
 
     // Add event listeners for player controls
     playBtn.addEventListener("click", () => {
@@ -153,6 +159,37 @@ function initializePlayer() {
 
       stopBtn.disabled = true;
     });
+
+    prev.addEventListener("click", () => {
+      console.log(TrackIndex);
+      TrackIndex--;
+      console.log(TrackIndex);
+      if (TrackIndex < 0) {
+        TrackIndex = trackData.length + TrackIndex;
+      }
+
+      audio.pause();
+      audio.seek(0);
+      loadTrack(TrackIndex, wmrAutoPlay, pauseBtn, playBtn);
+
+      // progress.style.width = 0; call progress function or add to on load
+    });
+
+    next.addEventListener("click", () => {
+      TrackIndex++;
+
+      audio.pause();
+      audio.seek(0);
+      if (TrackIndex >= trackData.length) {
+        TrackIndex = 0;
+      }
+      loadTrack(TrackIndex, wmrAutoPlay, pauseBtn, playBtn);
+      console.log(TrackIndex);
+
+      // progress.style.width = 0; call progress function or add to on load
+    });
+
+    console.log(prev);
 
     // Define the seek intervals in milliseconds
     const seekInterval = 200;
@@ -201,6 +238,13 @@ function initializePlayer() {
       clearInterval(seekRightIntervalId);
     });
 
+    // Code that gets Vol Attributes
+    leftVolSilde.oninput = function () {
+      wmrVolNum.innerHTML = leftVolSilde.value;
+    };
+
+    console.log(wmrVolNum);
+
     muteOff.addEventListener("click", () => {
       audio.setVolume(0);
     });
@@ -217,6 +261,7 @@ function initializePlayer() {
       audio.setLoop(false);
     });
 
+    //Not running
     // Update progress bar and seek bar as track plays
     audio.events.progress.on((position, duration) => {
       const progressPercent = (position / duration) * 100;
@@ -251,7 +296,6 @@ function initializePlayer() {
 }
 
 // Initialize an empty array to store the track data
-let trackData = [];
 
 // Define a function to handle popstate events
 function handlePopState(event) {
@@ -308,8 +352,7 @@ function getPlayList() {
       trackData = [...data]; // Push the data to the trackData array
       // Do something with the data, such as displaying it on the page
       loadMixPlaylist(trackData, playlistItems);
-      loadTrack(82);
-      //console.log(data[0]);
+      loadTrack(TrackIndex);
     })();
   }, 100);
 }
@@ -321,14 +364,14 @@ function loadMixPlaylist(mixs, playlistItems) {
     mixs &&
     mixs.map((mix, itemIndex) => {
       return `
-    <li class="Playlist-item item mb-3" data-index=${itemIndex}>
+    <li class="Playlist-item item d-flex align-items-center justifiy-content-center" data-index=${itemIndex}>
       <div class="thumbnail">
-        <img loading="lazy" data-index=${itemIndex} class="img-fluid "src=${mix.pictures.thumbnail} alt=${mix.name} />
+        <img loading="lazy" data-index=${itemIndex} class="img-fluid "src=${mix.pictures.medium_mobile} alt=${mix.name} />
 
       </div>
       <div class="wmrPlaylistdetails">
-        <p class="wmr-playlist-Title mb-0 text-white text-start">${mix.name}</p>
-        <p class="wmr-playlist-By mb-0 text-light text-start fs-7">By: Chuck Melody</p>
+        <p class="wmr-playlist-Title mb-0 fw-bold text-start">${mix.name}</p>
+        <p class="wmr-playlist-By mb-0 text-secondary text-start fs-7">By: Chuck Melody</p>
       </div>
       <div class="ms-auto">
         <p class="mb-0 text-white"><img class="img-fluid" src="../static/img/wmr/three-dots-vertical.svg" /></p>
@@ -344,22 +387,31 @@ function loadplaylistPlay(playlistItems, mixs) {
 
   playlistItems.addEventListener("click", function (e) {
     let wmrPlaylistIndex = e.srcElement.dataset.index;
-    loadTrack(wmrPlaylistIndex, mixs);
+    loadTrack(wmrPlaylistIndex, wmrAutoPlay);
+    TrackIndex = wmrPlaylistIndex;
+    console.log(TrackIndex);
   });
 }
 // Re do send fetch to array
-const loadTrack = async (trackIndex, mix) => {
+const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
+  // Get the player elements
+
+  const { titleElem, artistElem, coverImageElem, durationElem } =
+    playerElements;
   // Get the track from the tracks array
   const track = trackData[trackIndex];
+  titleElem.innerText = track.name;
 
-  console.log(track.name);
-  console.log(playerElements);
+  if (wmrAutoPlay === "true") {
+    // Load the track into the player
+    await audio.load(track.url, wmrAutoPlay);
+    console.log("Auto play is true");
+  } else {
+    // Load the track into the player
+    await audio.load(track.url);
+    console.log("Auto play not true");
+  }
 
-  playerElements.titleElem.innerText = track.name;
-
-
-  // Load the track into the player
-  await audio.load(track.url);
   // Update the track information on the player UI
   updateTrackInfo(track);
   // Set the cover image
@@ -368,11 +420,10 @@ const loadTrack = async (trackIndex, mix) => {
 
 // Define a function to update the track information on the player UI
 const updateTrackInfo = (track) => {
-  playerElements.artistElem.innerText;
   playerElements.artistElem.innerText = track.user.name;
   playerElements.durationElem.innerText = formatDuration(track.audio_length);
   playerElements.coverImageElem.src = track.pictures.medium;
-  playerElements.titleElem = track.name;
+  // playerElements.titleElem = track.name;
 };
 
 // Define a helper function to format duration in hours, minutes, and seconds
@@ -420,11 +471,17 @@ function toggleRepeat() {
 //   // Code that updates the track information on the player UI
 // }
 
-function playNextTrack(tracklist) {
-  // Code that loads and plays the next track in the tracklist
-}
+// Function to play the previous track
+const playPreviousTrack = async (TrackIndex) => {
+  // Decrement the track index
+  TrackIndex--;
+  if (TrackIndex < 0) {
+    TrackIndex = trackData.length + TrackIndex;
+    console.log(TrackIndex);
+  }
+};
 
-function playPrevTrack(tracklist) {
+function playNextTrack(tracklist) {
   // Code that loads and plays the previous track in the tracklist
 }
 
@@ -514,7 +571,7 @@ function mixcloudPlayer(mixcloudBtnConRow) {
   </div>
   <div class="col-md-4 d-flex justify-content-center align-items-center">
      <div class="d-flex justify-content-center align-items-center gap-2" id="wmr-player-center-info-con">
-        <img class="img-fluid pad-image rounded-1 mixcloud-cover-image" src="/static/img/wmr/covers/des.jpg" id="mixcloud-cover-image">
+        <img class="img-fluid pad-image2 rounded-1 mixcloud-cover-image" src="/static/img/wmr/covers/des.jpg" id="mixcloud-cover-image">
      </div>
      <div class="d-flex justify-content-center align-items-start flex-column" id="wmr-foot-player-info">
         <div>

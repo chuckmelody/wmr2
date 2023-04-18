@@ -1,7 +1,7 @@
 const wmrTabListCon = () => {
   return `
   <div class="container mt-3">
-  <ul class="nav nav-tabs" id="myTab" role="tablist">
+  <ul class="nav nav-tabs gap-3" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
       <button class="nav-link active" id="playlist-tab" data-bs-toggle="tab" data-bs-target="#playlist" type="button" role="tab" aria-controls="playlist" aria-selected="true">Playlist</button>
     </li>
@@ -18,7 +18,7 @@ const wmrTabListCon = () => {
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="playlist" role="tabpanel" aria-labelledby="playlist-tab">
       <div class="card bg-transparent">
-        <div class="card-body">
+        <div class="card-body p-0">
           <h5 class="card-title">Playlist</h5>
           <ul id="playlist-items" class="list-group wmr-plistUL">
           </ul>

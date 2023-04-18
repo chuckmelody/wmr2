@@ -332,7 +332,7 @@ body {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 /* Style the player div header */
@@ -380,6 +380,13 @@ body {
   width: 120px;
   height: 120px;
   box-shadow: inset 4px 6px 6px #43444f, -3px -3px 6px #524b4b;
+  transition: all 0.2s ease-in-out;
+  border-radius: 10px;
+  z-index: 1;
+}
+.pad-image2 {
+  width: 120px;
+  height: 120px;
   transition: all 0.2s ease-in-out;
   border-radius: 10px;
   z-index: 1;
@@ -453,6 +460,7 @@ body {
   cursor: pointer;
 }
 
+ul#playlist-items li,
 #wmr-player-btns-con {
   max-width: 100%;
   background-image: url("/static/img/wmr/pad_back.png");
@@ -690,8 +698,8 @@ ul#playlist-tracks .thumbnail img {
 }
 
 .wmr-plistUL li.item .thumbnail {
-  max-width: 50px;
-  max-height: 50px;
+  max-width: 70px;
+  max-height: 70px;
   overflow: hidden;
 }
 
@@ -699,11 +707,154 @@ ul#playlist-tracks .thumbnail img {
   width: 100%;
   height: 100%;
 }
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
+  background-image: url("/static/img/wmr/pad_on.png");
+  background-size: cover;
+  color: #000;
+  border: none;
+  background-color: transparent;
+}
+
+.nav-tabs .nav-link {
+  background-color: #242424;
+  box-shadow: -3px -3px 0.5px -0.5px #524b4b, 0px 0.5px 6px #524b4b;
+  transition: all 0.2s ease-in-out;
+  border-radius: 4px;
+  font-size: 20px;
+  padding: 0.2rem 0.2rem;
+  width: 100px;
+  height: auto;
+  outline: none;
+  color: var(--yellow-color);
+}
+
+.nav-tabs .nav-link:hover {
+  outline: none;
+  border: 2px solid black;
+}
+.nav-tabs {
+  border-bottom: none;
+}
+
+#wmrNowPlayCon img {
+  width: 100%;
+  height: 500px;
+}
+#wmrNowPlayConInner {
+  position: absolute;
+  top: 83px;
+  left: 99px;
+  z-index: -1;
+}
+#wmrNowPlayConInner img {
+  width: 430px;
+  height: 410px;
+}
+
+#wmrNowPlayDp {
+  position: relative;
+  background-color: rgb(51 49 51);
+  box-shadow: 0px 1px 0px 0px rgba(20, 20, 20, 0.004),
+    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.19);
+  border-radius: 4px;
+  width: 90%;
+  padding: 4%;
+  padding-left: 5%;
+  padding-top: 2%;
+  padding-bottom: 4%;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.wmrFadScale {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-image: url("/static/img/mixdesk/fader_scale.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.wmrFadScale img {
+  width: 25px;
+  height: 350px;
+}
+
+#wmrVolNum {
+  background: #000;
+  height: 40px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 20px;
+  border-radius: 4px;
+  letter-spacing: 1.2px;
+}
+
+/* #wmrVolNum::before {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 0;
+  border-top: 10px solid #000;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  bottom: -9px;
+} */
+
+#leftVolSilde {
+  width: 200px;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  position: relative;
+  background-color: var(255, 255, 255, 5);
+  border-radius: 4px;
+  outline: none;
+}
+
+#leftVolSilde::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #ffd901;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+}
+
+.vertical-range-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(-90deg);
+  height: 100%;
+}
 
 /* #wmr-buttonsCon {
   background-image: url("/static/img/wmr/buttonsbackpanel.png");
   background-size: contain;
   background-repeat: no-repeat;
+} */
+
+/* @media (max-width: 575.98px) {
+  #wmrNowPlayConOuter {
+    width: 100%;
+    height: 100%;
+  }
+
+  #wmrNowPlayConOuter img {
+    top: 0;
+    left: 0;
+    transform: none;
+  }
 } */
 
 /* Media Query for screens smaller than 768px */
@@ -736,6 +887,12 @@ ul#playlist-tracks .thumbnail img {
 @media only screen and (min-width: 768px) {
   #wmr-header {
     height: 66px;
+  }
+}
+@media (min-width: 992px) {
+  .mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
 }
 

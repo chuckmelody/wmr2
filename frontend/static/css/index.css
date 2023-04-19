@@ -66,6 +66,10 @@ body {
 ::before {
   box-sizing: border-box;
 }
+.button:focus {
+  outline: none !important;
+  border: none !important;
+}
 
 /* .nav {
     position: fixed;
@@ -147,14 +151,19 @@ body {
 
 /* Button styles */
 #wmr-header-menu .btn-brown {
-  background-color: #242424;
-  box-shadow: -1px -1px 0.5px 0px #524b4b, 0px 0.5px 6px #524b4b;
   transition: all 0.2s ease-in-out;
-  border-radius: 2px;
+  border-radius: 4px;
   font-size: 12px;
-  padding: 0.2rem 0.2rem;
+  padding: 0rem 0.2rem 0.4rem 0.2rem;
   width: 65px;
+
   color: var(--yellow-color);
+  background-image: url(/static/img/wmr/button_mid_off.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  outline: none !important;
+  border: 0 !important;
 }
 
 /* Button styles when active */
@@ -164,7 +173,8 @@ body {
   background-image: url("/static/img/wmr/pad_on.png");
   background-size: cover;
   color: #000;
-  border: none;
+  outline: none !important;
+  border: none !important;
 }
 
 /* Adjust gutter width between columns */
@@ -700,30 +710,43 @@ ul#playlist-tracks .thumbnail img {
 }
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
-  background-image: url("/static/img/wmr/pad_on.png");
+  background-image: url(/static/img/wmr/pad_on.png);
   background-size: cover;
   color: #000;
   border: none;
   background-color: transparent;
+  padding: 0rem 0.2rem 0.4rem 0.2rem;
+  width: 100px;
+  height: 45px;
 }
 
 .nav-tabs .nav-link {
-  background-color: #242424;
-  box-shadow: -3px -3px 0.5px -0.5px #524b4b, 0px 0.5px 6px #524b4b;
+  /* background-color: #242424;
+  box-shadow: -3px -3px 0.5px -0.5px #524b4b, 0px 0.5px 6px #524b4b; */
   transition: all 0.2s ease-in-out;
   border-radius: 4px;
   font-size: 20px;
-  padding: 0.2rem 0.2rem;
+  padding: 0rem 0.2rem 0.4rem 0.2rem;
   width: 100px;
-  height: auto;
+  height: 80px;
   outline: none;
   color: var(--yellow-color);
+  background-image: url(/static/img/wmr/button_mid_off.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .nav-tabs .nav-link:hover {
   outline: none;
-  border: 2px solid black;
+  border: 0px solid black;
 }
+
+.liBtnAl {
+  align-items: center;
+  display: flex;
+}
+
 .nav-tabs {
   border-bottom: none;
 }
@@ -744,13 +767,17 @@ ul#playlist-tracks .thumbnail img {
 }
 #wmrNowPlayDp {
   position: relative;
-  background-color: rgb(51 49 51);
+  /* background-color: rgb(51 49 51);
   box-shadow: 0px 1px 0px 0px rgba(20, 20, 20, 0.004),
     inset 0px 1px 0px 0px rgba(255, 255, 255, 0.19);
-  border-radius: 10px;
+  border-radius: 10px; */
   padding: 1%;
   height: 405px;
   width: 610px;
+  background-image: url("/static/img/mixdesk/backplate.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .wmrVolDarkBG {

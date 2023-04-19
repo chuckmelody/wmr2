@@ -2,16 +2,16 @@ const wmrTabListCon = () => {
   return `
   <div class="container mt-3">
   <ul class="nav nav-tabs gap-3" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
+    <li class="nav-item liBtnAl" role="presentation">
       <button class="nav-link active" id="playlist-tab" data-bs-toggle="tab" data-bs-target="#playlist" type="button" role="tab" aria-controls="playlist" aria-selected="true">Playlist</button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li class="nav-item liBtnAl" role="presentation">
       <button class="nav-link" id="favorites-tab" data-bs-toggle="tab" data-bs-target="#favorites" type="button" role="tab" aria-controls="favorites" aria-selected="false">Favorites</button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li class="nav-item liBtnAl" role="presentation">
       <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">History</button>
     </li>
-    <li class="nav-item" role="presentation">
+    <li class="nav-item liBtnAl" role="presentation">
       <button class="nav-link" id="stata-tab" data-bs-toggle="tab" data-bs-target="#stats" type="button" role="tab" aria-controls="stats" aria-selected="false">Stats</button>
     </li>
   </ul>

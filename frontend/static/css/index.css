@@ -944,6 +944,18 @@ background-repeat: no-repeat; */
   background: #000;
 }
 
+#wmrNowPlayDp {
+  width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+#wmrNowPlayDp img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+}
+
 .playlist-modal {
   overflow-y: auto;
   height: 75vh;

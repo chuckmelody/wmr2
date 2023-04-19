@@ -923,22 +923,22 @@ background-repeat: no-repeat; */
 /* Mix Page */
 .playlist-modal {
   overflow-y: scroll;
-  height: 75vh !important;
+  height: 75vh;
 }
 
 /* Track */
 .playlist-modal::-webkit-scrollbar-track {
-  background: #f1f1f1 !important;
+  background: #751e1e;
 }
 
 /* Thumb */
 .playlist-modal::-webkit-scrollbar-thumb {
-  background: #888 !important;
+  background: #888;
 }
 
 /* Handle on hover */
 .playlist-modal::-webkit-scrollbar-thumb:hover {
-  background: #ad2020 !important;
+  background: #555;
 }
 
 /* add !important to the end of each property to override any conflicting styles */

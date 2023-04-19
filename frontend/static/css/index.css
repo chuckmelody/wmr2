@@ -948,6 +948,9 @@ background-repeat: no-repeat; */
   width: 100%;
   height: auto;
   text-align: center;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #wmrNowPlayDp img {

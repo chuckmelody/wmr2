@@ -239,11 +239,11 @@ function initializePlayer() {
     });
 
     // Code that gets Vol Attributes
-    leftVolSilde.oninput = function () {
-      wmrVolNum.innerHTML = leftVolSilde.value;
-    };
+    // leftVolSilde.oninput = function () {
+    //   wmrVolNum.innerHTML = leftVolSilde.value;
+    // };
 
-    console.log(wmrVolNum);
+    // console.log(wmrVolNum);
 
     muteOff.addEventListener("click", () => {
       audio.setVolume(0);

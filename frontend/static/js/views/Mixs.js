@@ -14,33 +14,26 @@ export default class extends AbstractView {
           <div class="row">
             <div class="col-sm-12 col-md-4">
               <div class="playlist">
-                <div class="py-5" id="playlist-modal">
+                <div class="py-5 playlist-modal" id="playlist-modal">
                 ${wmrTabListCon()}
                 </div>
               </div>
             </div>
             <div class="col-sm-12 col-md-4 mt-5 px-5" id="wmrNowPlayDp">
 
-            <div class="d-flex justify-content-between text-center  mb-3">
+            <div class="d-flex justify-content-between text-center mb-1">
             
-            <div>
-            LEFT
-            </div>
-            <div>
-            Buttons
-            </div>
-            <div>
-            Right
-            </div>
+            
             </div>
 
 
 
             <div class="row d-flex justify-content-between text-center">
             <div class="col-sm-12 col-md-4 wmrVolDarkBG py-4">
+            
               <div class="wmrFadScaleLeft">
               <div class="wmrVolLeftCon">
-                   <input id="wmrVolLeftRange" type="range" min="0" max="10" value="0">
+                   <input class="slider" id="wmrVolLeftRange" type="range" min="0" max="10" value="0">
                 </div>
               
               </div>
@@ -54,12 +47,12 @@ export default class extends AbstractView {
             
               <div Class="wmrFadScaleRight">
               <div class="wmrVolRightCon">
-                   <input id="wmrVolRightRange" type="range" min="0" max="10" value="0">
+                   <input class="slider" id="wmrVolRightRange" type="range" min="0" max="10" value="0">
                 </div>
               </div>
             </div>
             </div>
-
+            
 
           </div>
           

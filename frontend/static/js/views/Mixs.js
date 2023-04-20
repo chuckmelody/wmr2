@@ -19,8 +19,8 @@ export default class extends AbstractView {
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 col-md-5">
-              <div class="mt-1 p-5" id="wmrNowPlayDp">
+            <div class="col-sm-12 col-md-4">
+              <div class="mt-4 p-5" id="wmrNowPlayDp">
               <div class="wmrNowPlayDpInner mt-4 pt-1">
                 <div class="row">
                 Switch
@@ -31,28 +31,64 @@ export default class extends AbstractView {
                 <div class="row">
                 Solo
                 </div>
+                
                 <div class="row">
                   <div class="wmr-mix-channalCon d-flex justify-content-center w-100 gap-2 px-0 text-center">
-                    <div class="wmr-channel wmrVolDarkBG">
-                      <div>
-                        Ch 1
+                    
+                  <div class="wmrVolDarkBG" id="wmrMeterConCh1">
+                  <span>0</span>
+                    <div class="my-0">
+                    <canvas class="m-0" id="wmCh1" width="25" height="205" data-val="0">No canvas</canvas>
+                    
+                    </div>
+                  </div>
+                  <div class="wmrVolDarkBG">
+                    <span>Level <span>0</span></span>
+                      <div class="wmr-channel my-3">
+                        <div class="wmrVolLeftCon wmr-channel-inner">
+                        <input class="slider" id="wmrVolLeftRange" type="range" min="0" step="1" max="10" value="0">
+                        </div>
+                      </div>
+                      <span>CH 1</span>
+                    </div>
+
+                    <div class="wmrVolDarkBG" id="wmrMeterConCh2">
+                    <span>0</span>
+                      <div class="my-0">
+                      <canvas class="m-0" id="wmCh2" width="25" height="205" data-val="0">No canvas</canvas>
+                      
                       </div>
                     </div>
-                    <div class="wmr-channel wmrVolDarkBG">
-                      <div>
-                        Ch 2
+
+
+
+
+                    <div class="wmrVolDarkBG">
+                    <span>Level <span>0</span></span>
+                      <div class="wmr-channel my-3">
+                        <div class="wmr-channel-inner">
+                        
+                        </div>
+                      </div>
+                      <span>CH 2</span>
+                    </div>
+                    <div class="wmrVolDarkBG" id="wmrMeterConCh2">
+                    <span>0</span>
+                      <div class="my-0">
+                      <canvas class="m-0" id="wmCh2" width="25" height="205" data-val="0">No canvas</canvas>
+                      
                       </div>
                     </div>
-                    <div class="wmr-channel wmrVolDarkBG">
-                      <div>
-                        Ch 3
+                    <div class="wmrVolDarkBG">
+                    <span>Level <span>0</span></span>
+                      <div class="wmr-channel my-3">
+                        <div class="wmrVolRightCon wmr-channel-inner3">
+                        <input class="slider" id="wmrVolRightRange" type="range" min="0" step="1" max="10" value="0">
+                          </div>
                       </div>
+                      <span>CH 3</span>
                     </div>
-                    <div class="wmr-channel wmrVolDarkBG">
-                      <div>
-                        Master
-                      </div>
-                    </div>
+
                   </div>
                 </div>
                 
@@ -96,7 +132,7 @@ export default class extends AbstractView {
 
   <div class="wmrFadScaleLeft">
   <div class="wmrVolLeftCon">
-       <input class="slider" id="wmrVolLeftRange" type="range" min="0" max="10" value="0">
+       <input class="slider" id="wmrVolLeftRange" type="range" min="0" step="1" max="10" value="0">
     </div>
   
   </div>

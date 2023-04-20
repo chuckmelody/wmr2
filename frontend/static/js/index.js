@@ -5,6 +5,7 @@ import Settings from "./views/Settings.js";
 import Mixs from "./views/Mixs.js";
 import MixView from "./views/MixView.js";
 import Audio from "./views/Audio.js";
+import vumeter from "./assets/vumeter.js";
 
 const pathToRegex = (path) =>
   new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
@@ -321,6 +322,8 @@ function callFunctionAndSaveState() {
 function getPlayList() {
   setTimeout(function () {
     const playlistItems = document.querySelector("#playlist-items");
+    const wmrVolLeftRange = document.getElementById("wmrVolLeftRange");
+    const wmCh1 = document.getElementById("wmCh1");
 
     playerElements = {
       titleElem: document.getElementById("wmr-foot-player-title"),
@@ -353,6 +356,7 @@ function getPlayList() {
       // Do something with the data, such as displaying it on the page
       loadMixPlaylist(trackData, playlistItems);
       loadTrack(TrackIndex);
+      mixerChannels(wmrVolLeftRange, wmCh1);
     })();
   }, 100);
 }
@@ -442,6 +446,21 @@ const formatDuration = (duration) => {
 
   return formattedDuration;
 };
+
+function mixerChannels(wmrVolLeftRange, wmCh1) {
+  //Code that Gets Vol Contol Inputs
+  vumeter(wmCh1, {
+    boxCount: 15,
+    boxGapFraction: 0.25,
+    max: 10,
+  });
+  console.log(wmrVolLeftRange);
+  wmrVolLeftRange.oninput = function (e) {
+    console.log(this.value);
+    wmCh1.setAttribute("data-val", this.value);
+  };
+  console.log(wmrVolLeftRange);
+}
 
 function playTrack() {
   // Code that plays the current track

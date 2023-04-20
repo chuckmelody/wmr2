@@ -785,29 +785,45 @@ ul#playlist-tracks .thumbnail img {
   background-image: url(/static/img/wmr/pad_back.png);
   background-size: cover;
   background-color: #000;
-  height: 370px;
+  height: 250px;
   width: 25%;
+  padding-top: 10px;
 }
 
+.wmr-channel,
 .wmrFadScaleRight,
-.wmrFadScaleLeft {
+.wmrFadScaleLeft::before {
   position: relative;
   background-image: url("/static/img/mixdesk/fader_scale.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
-  height: 320px;
-  padding-bottom: 10px;
+  height: 150px;
+  padding-bottom: 10px 0;
 }
 
-.wmrFadScaleLeft::before {
+.wmr-channel-inner::before {
   content: "";
   background-image: url("/static/img/mixdesk/fader_slot.png");
   background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
   top: -2px;
-  left: 45px;
+  left: 63px;
+  right: 0;
+  bottom: 0;
+
+  z-index: 1;
+}
+
+.wmr-channel-inner3::before {
+  content: "";
+  background-image: url("/static/img/mixdesk/fader_slot.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: -2px;
+  left: 32px;
   right: 0;
   bottom: 0;
 
@@ -876,10 +892,10 @@ ul#playlist-tracks .thumbnail img {
 
 .wmrVolLeftCon {
   position: absolute;
-  transform: rotate(-90deg);
+  /* transform: rotate(-90deg); */
   width: 330px;
   top: 0;
-  left: 23.5%;
+  left: 0%;
   right: 0;
   bottom: 0;
   z-index: 1;
@@ -887,7 +903,7 @@ ul#playlist-tracks .thumbnail img {
 
 .wmrVolRightCon {
   position: absolute;
-  transform: rotate(-90deg);
+  /* transform: rotate(-90deg); */
   width: 330px;
   top: 0;
   left: 23.5%;
@@ -896,11 +912,32 @@ ul#playlist-tracks .thumbnail img {
   z-index: 1;
 }
 
-.wmrVolRightCon #wmrVolRightRange,
 .wmrVolLeftCon #wmrVolLeftRange {
+  position: relative;
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
+  /* position: absolute; */
+  transform: rotate(-90deg);
+  width: 200px;
+  top: 25%;
+  left: -28%;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+.wmrVolRightCon #wmrVolRightRange {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  /* position: absolute; */
+  transform: rotate(-90deg);
+  width: 200px;
+  top: 25%;
+  left: -37.5%;
+  right: 0;
+  bottom: 0;
   z-index: 2;
 }
 
@@ -950,7 +987,7 @@ background-repeat: no-repeat; */
   text-align: center;
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%; /* 16:9 aspect ratio */
 }
 
 #wmrNowPlayDp img {
@@ -997,6 +1034,12 @@ background-repeat: no-repeat; */
   background-position: center center;
   cursor: pointer;
   z-index: 1;
+}
+
+#wmrMeterConCh3,
+#wmrMeterConCh2,
+#wmrMeterConCh1 {
+  width: 10%;
 }
 
 /* .playlist-modal::-webkit-scrollbar-thumb:hover {

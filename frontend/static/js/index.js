@@ -246,21 +246,21 @@ function initializePlayer() {
 
     // console.log(wmrVolNum);
 
-    muteOff.addEventListener("click", () => {
-      audio.setVolume(0);
-    });
+    // muteOff.addEventListener("click", () => {
+    //   audio.setVolume(0);
+    // });
 
-    muteOn.addEventListener("click", () => {
-      audio.setVolume(1);
-    });
+    // muteOn.addEventListener("click", () => {
+    //   audio.setVolume(1);
+    // });
 
-    repeat.addEventListener("click", () => {
-      audio.setLoop(true);
-    });
+    // repeat.addEventListener("click", () => {
+    //   audio.setLoop(true);
+    // });
 
-    repeatOn.addEventListener("click", () => {
-      audio.setLoop(false);
-    });
+    // repeatOn.addEventListener("click", () => {
+    //   audio.setLoop(false);
+    // });
 
     //Not running
     // Update progress bar and seek bar as track plays
@@ -289,6 +289,21 @@ function initializePlayer() {
       seek.value = 0;
       playBtn.classList.remove("d-none");
       pauseBtn.classList.add("d-none");
+    });
+
+    // Create an AudioContext object
+    const audioContext = new AudioContext();
+    // Create a GainNode to control the volume
+    const volumeControl = audioContext.createGain();
+    volumeControl.connect(audioContext.destination);
+    // Connect the Mixcloud audio element to the volume control
+    const source = audioContext.createMediaElementSource(audio);
+    source.connect(volumeControl);
+    // Listen for changes to the volume range input
+    const volumeRange = document.getElementById("wmrVolRightRange");
+    volumeRange.addEventListener("input", () => {
+      // Set the volume to the current value of the range input (between 0 and 1)
+      volumeControl.gain.value = volumeRange.value;
     });
   });
 

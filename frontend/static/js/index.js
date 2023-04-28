@@ -296,15 +296,20 @@ function initializePlayer() {
     // Create a GainNode to control the volume
     const volumeControl = audioContext.createGain();
     volumeControl.connect(audioContext.destination);
-    // Connect the Mixcloud audio element to the volume control
-    const source = audioContext.createMediaElementSource(audio);
-    source.connect(volumeControl);
-    // Listen for changes to the volume range input
-    const volumeRange = document.getElementById("wmrVolRightRange");
-    volumeRange.addEventListener("input", () => {
-      // Set the volume to the current value of the range input (between 0 and 1)
-      volumeControl.gain.value = volumeRange.value;
-    });
+
+    // // Connect the Mixcloud audio element to the volume control
+    // const source = audioContext.createMediaElementSource(audio);
+    // console.log(audio);
+
+    console.log(audio.tagName); // should output "AUDIO" if it's an HTMLMediaElement
+
+    // source.connect(volumeControl);
+    // // Listen for changes to the volume range input
+    // const volumeRange = document.getElementById("wmrVolRightRange");
+    // volumeRange.addEventListener("input", () => {
+    //   // Set the volume to the current value of the range input (between 0 and 1)
+    //   volumeControl.gain.value = volumeRange.value;
+    // });
   });
 
   // Return the Mixcloud Player Widget

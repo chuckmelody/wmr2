@@ -61,14 +61,28 @@ body {
   /* text-stroke: 1px black; */
 }
 
+.text-wmr2 {
+  color: var(--yellow-color);
+  /* -webkit-text-stroke: 1px black; */
+  font-weight: 500;
+  line-height: 1.2;
+  /* -webkit-text-stroke: 1px black !important; */
+  opacity: 0.8;
+}
+
 *,
 ::after,
 ::before {
   box-sizing: border-box;
 }
+.btn,
 .button:focus {
   outline: none !important;
   border: none !important;
+}
+
+.bg-black {
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 /* .nav {
@@ -182,10 +196,10 @@ body {
   --bs-gutter-x: 5px;
   background-image: url(/static/img/wmr/pad_back.png);
   background-size: cover;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 0px 5px;
   max-width: 100%;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 #wmr-log-small {
@@ -469,11 +483,17 @@ body {
 
 ul#playlist-items li,
 #wmr-player-btns-con {
+  transition: all 0.2s ease-in-out;
   max-width: 100%;
   background-image: url("/static/img/wmr/pad_back.png");
   background-size: cover;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.1);
   padding: 15px;
+}
+
+ul#playlist-items li:hover,
+#wmr-player-btns-con {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 #wmr-player-btns-con {
@@ -707,6 +727,7 @@ ul#playlist-tracks .thumbnail img {
 .wmr-plistUL li.item .thumbnail img {
   width: 100%;
   height: 100%;
+  cursor: pointer;
 }
 .nav-tabs .nav-item.show .nav-link,
 .nav-tabs .nav-link.active {
@@ -784,10 +805,11 @@ ul#playlist-tracks .thumbnail img {
   position: relative;
   background-image: url(/static/img/wmr/pad_back.png);
   background-size: cover;
-  background-color: #000;
+  background-color: rgba(0, 0, 0, 0.01);
   height: 250px;
   width: 25%;
   padding-top: 10px;
+  border-radius: 4px;
 }
 
 .wmr-channel,
@@ -809,7 +831,7 @@ ul#playlist-tracks .thumbnail img {
   background-repeat: no-repeat;
   position: absolute;
   top: -2px;
-  left: 63px;
+  left: 65px;
   right: 0;
   bottom: 0;
 
@@ -843,6 +865,97 @@ ul#playlist-tracks .thumbnail img {
 
   z-index: 1;
 }
+
+.wmrM700,
+.wmrVolDarkBG span {
+  transition: all 0.2s ease-in-out;
+  font-size: 14px;
+  color: rgb(255, 255, 255, 0.4);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+}
+.wmrM700 {
+  transition: all 0.2s ease-in-out;
+  font-size: 10px;
+  color: rgb(255, 255, 255, 0.7);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.wmrMute {
+  transition: all 0.2s ease-in-out;
+  font-size: 14px;
+  color: rgb(255, 255, 255, 0.4);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+  background: #171414;
+  border-radius: 4;
+  cursor: pointer;
+  background-image: url("/static/img/wmr/button_mid_off.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.plus-btn,
+.min-btn,
+.wmrMute:hover {
+  color: rgba(222, 124, 64, 0.8);
+  background-color: var(--black);
+}
+
+.wmrMixText button {
+  transition: all 0.2s ease-in-out;
+
+  font-size: 14px;
+  color: rgb(255, 255, 255, 0.4);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+}
+.wmrMixText button:hover {
+  color: rgba(222, 124, 64, 0.7) !important;
+}
+.wmrMixText {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+.wmrMixEffectCd {
+  transition: all 0.2s ease-in-out;
+  font-size: 14px;
+  color: rgb(255, 255, 255, 0.4);
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.2;
+  text-align: center;
+  background: #171414;
+  border-radius: 4;
+}
+.wmrMixEffectCd {
+  background-image: url(/static/img/wmr/pad_back.png);
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.01) !important;
+  background-position: center;
+}
+.wmrMixEffectCd .card-head {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.plus-btn,
+.min-btn {
+  background-image: url(/static/img/mixdesk/button_small_off.png);
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.01);
+  background-position: center;
+  outline: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 /* .vertical-range-container {
   position: relative;
   display: flex;
@@ -895,7 +1008,18 @@ ul#playlist-tracks .thumbnail img {
   /* transform: rotate(-90deg); */
   width: 330px;
   top: 0;
-  left: 0%;
+  left: -6%;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+}
+
+.wmrVolMiddleCon {
+  position: absolute;
+  /* transform: rotate(-90deg); */
+  width: 330px;
+  top: 4%;
+  left: -5%;
   right: 0;
   bottom: 0;
   z-index: 1;
@@ -906,7 +1030,7 @@ ul#playlist-tracks .thumbnail img {
   /* transform: rotate(-90deg); */
   width: 330px;
   top: 0;
-  left: 23.5%;
+  left: 19.5%;
   right: 0;
   bottom: 0;
   z-index: 1;
@@ -919,9 +1043,9 @@ ul#playlist-tracks .thumbnail img {
   background: transparent;
   /* position: absolute; */
   transform: rotate(-90deg);
-  width: 200px;
-  top: 25%;
-  left: -28%;
+  width: 175px;
+  top: 30%;
+  left: -28.5%;
   right: 0;
   bottom: 0;
   z-index: 2;
@@ -933,9 +1057,23 @@ ul#playlist-tracks .thumbnail img {
   background: transparent;
   /* position: absolute; */
   transform: rotate(-90deg);
-  width: 200px;
-  top: 25%;
-  left: -37.5%;
+  width: 175px;
+  top: 30%;
+  left: -38.5%;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+}
+.wmrVolMiddleCon #wmrVolMiddleRange {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  /* position: absolute; */
+  transform: rotate(-90deg);
+  width: 175px;
+  top: 25.5%;
+  left: -28.5%;
   right: 0;
   bottom: 0;
   z-index: 2;
@@ -956,10 +1094,12 @@ input[type="range"].slider::-webkit-slider-thumb {
   appearance: none;
   width: 60px;
   height: 60px;
-  background-image: url("/static/img/wmr/icons/fader_cap.png");
+  background-image: url("/static/img/mixdesk/Knob_Slider.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
+  transform: rotate(90deg);
+  padding-top: 5%;
   cursor: pointer;
   z-index: 1;
 }
@@ -969,6 +1109,9 @@ background-size: contain;
 background-repeat: no-repeat; */
 
 #wmrVolRightRange {
+  width: 100%;
+}
+#wmrVolMiddleRange {
   width: 100%;
 }
 

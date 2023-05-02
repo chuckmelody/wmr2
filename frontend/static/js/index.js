@@ -140,6 +140,10 @@ function initializePlayer() {
     const leftVolSilde = document.querySelector("#leftVolSilde");
     const wmrVolNum = document.querySelector("#wmrVolNum");
 
+    console.log(audio);
+
+    audio.setVolume(50);
+
     // Add event listeners for player controls
     playBtn.addEventListener("click", () => {
       audio.play();
@@ -411,6 +415,7 @@ function loadplaylistPlay(playlistItems, mixs) {
     loadTrack(wmrPlaylistIndex, wmrAutoPlay);
     TrackIndex = wmrPlaylistIndex;
     console.log(TrackIndex);
+    console.log(audio.getVolume());
   });
 }
 // Re do send fetch to array
@@ -493,6 +498,13 @@ function mixerChannels(Range, wmCh) {
     }
   };
 }
+
+// const audioContext = new AudioContext();
+// const source = audioContext.createMediaElementSource(audio);
+// const gainNode = audioContext.createGain();
+// gainNode.gain.value = 0.5; // default volume
+// source.connect(gainNode).connect(audioContext.destination);
+// console.log(mixerDJM700Elements.wmrChannel3);
 
 function playTrack() {
   // Code that plays the current track

@@ -105,6 +105,8 @@ document.addEventListener("DOMContentLoaded", () => {
 //   return data;
 // };
 let playerElements;
+
+let mixerDJM700Elements;
 let trackData = [];
 let TrackIndex = 83;
 let wmrAutoPlay = "true";
@@ -290,26 +292,6 @@ function initializePlayer() {
       playBtn.classList.remove("d-none");
       pauseBtn.classList.add("d-none");
     });
-
-    // Create an AudioContext object
-    const audioContext = new AudioContext();
-    // Create a GainNode to control the volume
-    const volumeControl = audioContext.createGain();
-    volumeControl.connect(audioContext.destination);
-
-    // // Connect the Mixcloud audio element to the volume control
-    // const source = audioContext.createMediaElementSource(audio);
-    // console.log(audio);
-
-    console.log(audio.tagName); // should output "AUDIO" if it's an HTMLMediaElement
-
-    // source.connect(volumeControl);
-    // // Listen for changes to the volume range input
-    // const volumeRange = document.getElementById("wmrVolRightRange");
-    // volumeRange.addEventListener("input", () => {
-    //   // Set the volume to the current value of the range input (between 0 and 1)
-    //   volumeControl.gain.value = volumeRange.value;
-    // });
   });
 
   // Return the Mixcloud Player Widget
@@ -345,6 +327,16 @@ function getPlayList() {
     const wmrVolLeftRange = document.getElementById("wmrVolLeftRange");
     const wmCh1 = document.getElementById("wmCh1");
 
+    mixerDJM700Elements = {
+      mixDJM700: document.getElementById("wmrNowPlayDp"),
+      wmrChannel3: document.getElementById("wmrVolRightRange"),
+      wmCh3: document.getElementById("wmCh3"),
+      wmrMeterConCh1Val: document.querySelector("#wmrMeterConCh1 span"),
+      wmrMeterConCh3Val: document.querySelector("#wmrMeterConCh3 span"),
+    };
+
+    console.log(mixerDJM700Elements.wmrMeterConCh1Val);
+
     playerElements = {
       titleElem: document.getElementById("wmr-foot-player-title"),
       artistElem: document.getElementById("wmr-foot-player-artist"),
@@ -377,6 +369,11 @@ function getPlayList() {
       loadMixPlaylist(trackData, playlistItems);
       loadTrack(TrackIndex);
       mixerChannels(wmrVolLeftRange, wmCh1);
+      mixerChannels(
+        mixerDJM700Elements.wmrChannel3,
+        mixerDJM700Elements.wmCh3,
+        mixerDJM700Elements
+      );
     })();
   }, 100);
 }
@@ -425,6 +422,7 @@ const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
   // Get the track from the tracks array
   const track = trackData[trackIndex];
   titleElem.innerText = track.name;
+  console.log(track);
 
   if (wmrAutoPlay === "true") {
     // Load the track into the player
@@ -467,19 +465,33 @@ const formatDuration = (duration) => {
   return formattedDuration;
 };
 
-function mixerChannels(wmrVolLeftRange, wmCh1) {
+function mixerChannels(Range, wmCh) {
+  const {
+    mixDJM700,
+    wmrChannel3,
+    wmCh3,
+    wmrMeterConCh1Val,
+    wmrMeterConCh3Val,
+  } = mixerDJM700Elements;
+
   //Code that Gets Vol Contol Inputs
-  vumeter(wmCh1, {
+  vumeter(wmCh, {
     boxCount: 15,
     boxGapFraction: 0.25,
     max: 10,
   });
-  console.log(wmrVolLeftRange);
-  wmrVolLeftRange.oninput = function (e) {
+
+  Range.oninput = function (e) {
     console.log(this.value);
-    wmCh1.setAttribute("data-val", this.value);
+    wmCh.setAttribute("data-val", this.value);
+    //wmrMeterConCh3Val.innerText = this.value;
+    // console.log(e.target);
+    if (e.target.id === "wmrVolLeftRange") {
+      wmrMeterConCh1Val.innerText = this.value;
+    } else if (e.target.id === "wmrVolRightRange") {
+      wmrMeterConCh3Val.innerText = this.value;
+    }
   };
-  console.log(wmrVolLeftRange);
 }
 
 function playTrack() {

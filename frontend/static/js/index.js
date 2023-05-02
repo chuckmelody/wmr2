@@ -142,7 +142,12 @@ function initializePlayer() {
 
     console.log(audio);
 
-    audio.setVolume(50);
+    const rangeInput = document.getElementById("wmrVolRightRange");
+    rangeInput.addEventListener("input", (event) => {
+      const volume = event.target.value * 10;
+      audio.setVolume(volume);
+      console.log(volume);
+    });
 
     // Add event listeners for player controls
     playBtn.addEventListener("click", () => {
@@ -414,8 +419,6 @@ function loadplaylistPlay(playlistItems, mixs) {
     let wmrPlaylistIndex = e.srcElement.dataset.index;
     loadTrack(wmrPlaylistIndex, wmrAutoPlay);
     TrackIndex = wmrPlaylistIndex;
-    console.log(TrackIndex);
-    console.log(audio.getVolume());
   });
 }
 // Re do send fetch to array

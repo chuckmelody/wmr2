@@ -140,15 +140,6 @@ function initializePlayer() {
     const leftVolSilde = document.querySelector("#leftVolSilde");
     const wmrVolNum = document.querySelector("#wmrVolNum");
 
-    console.log(audio);
-
-    const rangeInput = document.getElementById("wmrVolRightRange");
-    rangeInput.addEventListener("input", (event) => {
-      const volume = event.target.value * 10;
-      audio.setVolume(volume);
-      console.log(volume);
-    });
-
     // Add event listeners for player controls
     playBtn.addEventListener("click", () => {
       audio.play();
@@ -498,6 +489,7 @@ function mixerChannels(Range, wmCh) {
       wmrMeterConCh1Val.innerText = this.value;
     } else if (e.target.id === "wmrVolRightRange") {
       wmrMeterConCh3Val.innerText = this.value;
+      audio.setVolume(this.value);
     }
   };
 }

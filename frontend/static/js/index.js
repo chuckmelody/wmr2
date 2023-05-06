@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
 //   return data;
 // };
 let playerElements;
-
+let wmrChannel3VolumeLevel = 0;
 let mixerDJM700Elements;
 let trackData = [];
 let TrackIndex = 83;
@@ -333,6 +333,7 @@ function getPlayList() {
       wmCh3: document.getElementById("wmCh3"),
       wmrMeterConCh1Val: document.querySelector("#wmrMeterConCh1 span"),
       wmrMeterConCh3Val: document.querySelector("#wmrMeterConCh3 span"),
+      wmrVolRightrangeInput: document.getElementById("wmrVolRightRange"),
     };
 
     console.log(mixerDJM700Elements.wmrMeterConCh1Val);
@@ -342,6 +343,7 @@ function getPlayList() {
       artistElem: document.getElementById("wmr-foot-player-artist"),
       coverImageElem: document.getElementById("mixcloud-cover-image"),
       durationElem: document.getElementById("wmr-foot-player-duration"),
+      detailsImgElem: document.querySelector("#wmrNowPlayConInner img"),
     };
 
     // Define a function to fetch the data
@@ -374,6 +376,7 @@ function getPlayList() {
         mixerDJM700Elements.wmCh3,
         mixerDJM700Elements
       );
+      mixerMixcludeVolume(mixerDJM700Elements);
     })();
   }, 100);
 }
@@ -416,8 +419,13 @@ function loadplaylistPlay(playlistItems, mixs) {
 const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
   // Get the player elements
 
-  const { titleElem, artistElem, coverImageElem, durationElem } =
-    playerElements;
+  const {
+    titleElem,
+    artistElem,
+    coverImageElem,
+    durationElem,
+    detailsImgElem,
+  } = playerElements;
   // Get the track from the tracks array
   const track = trackData[trackIndex];
   titleElem.innerText = track.name;
@@ -426,21 +434,23 @@ const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
   if (wmrAutoPlay === "true") {
     // Load the track into the player
     await audio.load(track.url, wmrAutoPlay);
-    console.log("Auto play is true");
   } else {
     // Load the track into the player
     await audio.load(track.url);
-    console.log("Auto play not true");
+    //audio.setVolume(wmrChannel3VolumeLevel); // Set the volume using the Mixcloud Player Widget API
   }
 
   // Update the track information on the player UI
   updateTrackInfo(track);
   // Set the cover image
   playerElements.coverImageElem.src = track.pictures.medium;
+  //detailsImgElem.src = track.pictures.medium;
 };
 
 // Define a function to update the track information on the player UI
 const updateTrackInfo = (track) => {
+  playerElements.detailsImgElem.src = "";
+  playerElements.detailsImgElem.src = track.pictures.large;
   playerElements.artistElem.innerText = track.user.name;
   playerElements.durationElem.innerText = formatDuration(track.audio_length);
   playerElements.coverImageElem.src = track.pictures.medium;
@@ -471,6 +481,7 @@ function mixerChannels(Range, wmCh) {
     wmCh3,
     wmrMeterConCh1Val,
     wmrMeterConCh3Val,
+    wmrVolRightrangeInput,
   } = mixerDJM700Elements;
 
   //Code that Gets Vol Contol Inputs
@@ -481,6 +492,8 @@ function mixerChannels(Range, wmCh) {
   });
 
   Range.oninput = function (e) {
+    const volume = this.value / 10; // Scale the volume to be between 0 and 1
+    audio.setVolume(volume); // Set the volume using the Mixcloud Player Widget API
     console.log(this.value);
     wmCh.setAttribute("data-val", this.value);
     //wmrMeterConCh3Val.innerText = this.value;
@@ -489,9 +502,24 @@ function mixerChannels(Range, wmCh) {
       wmrMeterConCh1Val.innerText = this.value;
     } else if (e.target.id === "wmrVolRightRange") {
       wmrMeterConCh3Val.innerText = this.value;
-      audio.setVolume(this.value);
+      wmrVolRightrangeInput.setAttribute("value", this.value);
+      wmrChannel3VolumeLevel = this.value;
     }
   };
+}
+
+function mixerMixcludeVolume(Range, wmCh) {
+  const {
+    mixDJM700,
+    wmrChannel3,
+    wmCh3,
+    wmrMeterConCh1Val,
+    wmrMeterConCh3Val,
+    wmrVolRightrangeInput,
+  } = mixerDJM700Elements;
+
+  const currentValue = wmrVolRightrangeInput.value;
+  console.log(currentValue);
 }
 
 // const audioContext = new AudioContext();

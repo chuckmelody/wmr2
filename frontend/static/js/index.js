@@ -139,6 +139,12 @@ function initializePlayer() {
     const prev = playerDiv.querySelector("#wmr-mixcloud-double-left");
     const leftVolSilde = document.querySelector("#leftVolSilde");
     const wmrVolNum = document.querySelector("#wmrVolNum");
+    const volumeCH3Input = document.getElementById("wmrVolRightRange");
+    const volume = volumeCH3Input.value / 10;
+
+    audio.setVolume(volume);
+
+    console.log(volume);
 
     // Add event listeners for player controls
     playBtn.addEventListener("click", () => {

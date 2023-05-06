@@ -140,7 +140,7 @@ function initializePlayer() {
     const leftVolSilde = document.querySelector("#leftVolSilde");
     const wmrVolNum = document.querySelector("#wmrVolNum");
     const volumeCH3Input = document.getElementById("wmrVolRightRange");
-    const volume = volumeCH3Input.value / 10;
+    const volume = parseFloat(volumeCH3Input.value) / 10.0;
 
     audio.setVolume(volume);
 

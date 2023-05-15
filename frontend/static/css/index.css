@@ -70,6 +70,10 @@ body {
   opacity: 0.8;
 }
 
+.wmr-Grey {
+  color: #999;
+}
+
 *,
 ::after,
 ::before {
@@ -166,9 +170,9 @@ body {
 /* Button styles */
 #wmr-header-menu .btn-brown {
   transition: all 0.2s ease-in-out;
-  border-radius: 4px;
+  border-radius: 2px;
   font-size: 12px;
-  padding: 0rem 0.2rem 0.4rem 0.2rem;
+  padding: 0rem 0.2rem 0rem 0.2rem;
   width: 65px;
 
   color: var(--yellow-color);
@@ -365,6 +369,7 @@ body {
   /* background-image: url("/static/img/wmr/bar.png"); */
   background-size: cover;
   height: 3rem;
+  opacity: 0.4;
 }
 /* Style the player div close button */
 #player-close {
@@ -745,7 +750,7 @@ ul#playlist-tracks .thumbnail img {
   /* background-color: #242424;
   box-shadow: -3px -3px 0.5px -0.5px #524b4b, 0px 0.5px 6px #524b4b; */
   transition: all 0.2s ease-in-out;
-  border-radius: 4px;
+  border-radius: 2px;
   font-size: 20px;
   padding: 0rem 0.2rem 0.4rem 0.2rem;
   width: 100px;
@@ -778,8 +783,8 @@ ul#playlist-tracks .thumbnail img {
 }
 #wmrNowPlayConInner {
   position: absolute;
-  top: 83px;
-  left: 99px;
+  top: 35px;
+  /* left: 99px; */
   z-index: -1;
 }
 #wmrNowPlayConInner img {

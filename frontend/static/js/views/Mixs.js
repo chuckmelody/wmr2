@@ -119,14 +119,14 @@ export default class extends AbstractView {
                          </div>
                       </div>
                       <div class="row m-0 my-2">
-                      <div class="d-flex justify-content-between wmrMixEffectCd gap-2 py-2 mx-1" style="max-width: 98.5%">
-                      <button class="btn btn-dark plus-btn text-secondary">Playlist</button>
-                      <button class="btn btn-dark plus-btn text-secondary">Details</button>
-                      <button class="btn btn-dark plus-btn text-secondary">Favorites</button>
-                      <button class="btn btn-dark plus-btn text-secondary">History</button>
+                      <div class="d-flex justify-content-between wmrMixEffectCd wmrMixTabSelectCon gap-2 py-2 mx-1" style="max-width: 98.5%">
+                      <button class="btn btn-dark plus-btn text-secondary" id="wmrMixerPlayListBtn">Playlist</button>
+                      <button class="btn btn-dark plus-btn text-secondary" id="wmrMixerDetailsBtn">Details</button>
+                      <button class="btn btn-dark plus-btn text-secondary" id="wmrMixerFavoritesBtn">Favorites</button>
+                      <button class="btn btn-dark plus-btn text-secondary" id="wmrMixerHistoryBtn">History</button>
                       
-                      <button class="btn btn-dark plus-btn text-secondary">Effects</button>
-                      <button class="btn btn-dark plus-btn text-secondary">Player</button>
+                      <button class="btn btn-dark plus-btn text-secondary" id="wmrMixerStatsBtn">Stats</button>
+                      <button class="btn btn-dark plus-btn text-secondary" id="wmrMixerPlayerBtn">Player</button>
                       </div>
                       </div>
                       <div class="row w-100 m-0">
@@ -171,7 +171,7 @@ export default class extends AbstractView {
                                <button class="btn btn-dark wmrMute" id="wmrCh3Mute">Mute</button>
                                <div class="wmr-channel my-3">
                                   <div class="wmrVolRightCon wmr-channel-inner3">
-                                     <input class="slider" id="wmrVolRightRange" type="range" min="0" step="1" max="10" value="0">
+                                     <input class="slider" id="wmrVolRightRange" type="range" min="0" step="10" max="100" value="0">
                                   </div>
                                </div>
                                <span>MIXCLOUD</span>
@@ -186,14 +186,7 @@ export default class extends AbstractView {
              </div>
           </div>
           <div class="col-12 col-md-4">
-          <div class="px-4 pt-5 d-flex justify-content-center align-items-center position-relative" id="wmrNowPlayCon">
-            <div id="wmrNowPlayConInner">
-            <img src="./static/img/wmr/covers/des.jpg" alt="Mix Image ">
-            </div>
-            <div id="wmrNowPlayConOuter" class="w-100">
-                <img class="img-fluid" src="./static/img/wmr/covers/TabScreenFrame400.png" alt="Tab Screen">
-            </div>
-          </div>
+          
         </div>
        </div>
     </div>

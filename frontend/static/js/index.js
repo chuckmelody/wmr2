@@ -105,11 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
 //   return data;
 // };
 let playerElements;
-let wmrChannel3VolumeLevel = 0;
+let wmrChannel3VolumeLevel = 50;
 let mixerDJM700Elements;
 let trackData = [];
+let wmrCurrenttrack = [];
 let TrackIndex = 83;
 let wmrAutoPlay = "true";
+let wmrRepeatV = false;
+let isPlaying = false;
 
 function initializePlayer() {
   // Initialize the Mixcloud Player Widget
@@ -140,17 +143,22 @@ function initializePlayer() {
     const leftVolSilde = document.querySelector("#leftVolSilde");
     const wmrVolNum = document.querySelector("#wmrVolNum");
     const volumeCH3Input = document.getElementById("wmrVolRightRange");
-    const volume = parseFloat(volumeCH3Input.value) / 10.0;
+    const volumeCH3InputCon = parseFloat(volumeCH3Input.value) / 10.0;
 
-    audio.setVolume(volume);
-
+    const volumePercentage = 20; // set the volume to 75%
+    const volume = volumePercentage / 100; // convert percentage to decimal value
+    audio.setVolume(volume); // set the volume using the Mixcloud Player Widget API
     console.log(volume);
+    const wmrMixerTabs = document.querySelector(".wmrMixTabSelectCon");
+    const playlistModalLeft = document.querySelector("#playlist-modal");
 
     // Add event listeners for player controls
     playBtn.addEventListener("click", () => {
       audio.play();
+
       playBtn.classList.add("d-none");
       pauseBtn.classList.remove("d-none");
+      wmrPostionDuration();
     });
 
     pauseBtn.addEventListener("click", () => {
@@ -193,12 +201,23 @@ function initializePlayer() {
         TrackIndex = 0;
       }
       loadTrack(TrackIndex, wmrAutoPlay, pauseBtn, playBtn);
-      console.log(TrackIndex);
+
+      // console.log(TrackIndex);
 
       // progress.style.width = 0; call progress function or add to on load
     });
 
-    console.log(prev);
+    repeat.addEventListener("click", () => {
+      repeatOn.classList.remove("d-none");
+      repeat.classList.add("d-none");
+      wmrRepeatV = true;
+    });
+
+    repeatOn.addEventListener("click", () => {
+      repeat.classList.remove("d-none");
+      repeatOn.classList.add("d-none");
+      wmrRepeatV = false;
+    });
 
     // Define the seek intervals in milliseconds
     const seekInterval = 200;
@@ -247,6 +266,12 @@ function initializePlayer() {
       clearInterval(seekRightIntervalId);
     });
 
+    seekRightBtnOn.addEventListener("mouseup", () => {
+      seekRightBtnOn.classList.add("d-none");
+      seekRightBtn.classList.remove("d-none");
+      clearInterval(seekRightIntervalId);
+    });
+
     // Code that gets Vol Attributes
     // leftVolSilde.oninput = function () {
     //   wmrVolNum.innerHTML = leftVolSilde.value;
@@ -270,12 +295,43 @@ function initializePlayer() {
     //   audio.setLoop(false);
     // });
 
+    // audio.events.progress.on(progressListener);
+    // function progressListener() {
+    //   // This will be called whenever the widget is paused
+    //   console.log(progressListener);
+    // }
+
+    // audio.getPosition().then(function (position) {
+    //   // "position" is the current position
+    //   console.log(position);
+    // });
+
     //Not running
     // Update progress bar and seek bar as track plays
-    audio.events.progress.on((position, duration) => {
-      const progressPercent = (position / duration) * 100;
-      progress.style.width = `${progressPercent}%`;
-    });
+    function wmrPostionDuration() {
+      audio.events.progress.on((position, duration) => {
+        const progressPercent = (position / duration) * 100;
+        progress.style.width = `${progressPercent}%`;
+        console.log(progressPercent);
+
+        if (progressPercent === 100) {
+          if (wmrRepeatV === true) {
+            wmrRepeat();
+          } else if (wmrRepeatV === false) {
+            wmrEnded();
+          }
+        }
+      });
+    }
+
+    function wmrRepeat() {
+      progress.style.width = "0%";
+      audio.seek.value = 0;
+
+      next.click();
+      playBtn.classList.add("d-none");
+      pauseBtn.classList.remove("d-none");
+    }
 
     // Click on progress bar
     progressContainer.addEventListener("click", setProgress);
@@ -289,15 +345,81 @@ function initializePlayer() {
         // "position" is the current duration
         const positionGet = (clickX / width) * duration;
         audio.seek(positionGet);
+        // progress.style.width = `${progressPercent}%`;
       });
     }
 
-    audio.events.ended.on(() => {
-      progress.style.width = "0%";
-      seek.value = 0;
-      playBtn.classList.remove("d-none");
-      pauseBtn.classList.add("d-none");
-    });
+    function wmrEnded() {
+      audio.events.ended.on(() => {
+        progress.style.width = "0%";
+        audio.seek.value = 0;
+        playBtn.classList.remove("d-none");
+        pauseBtn.classList.add("d-none");
+      });
+    }
+
+    const mixerDJM700TabSelect = {
+      mixDJM700PlayerBtn: wmrMixerTabs.querySelector("#wmrMixerPlayerBtn"),
+      mixDJM700TabButtons: wmrMixerTabs.querySelectorAll(
+        ".wmrMixTabSelectCon button"
+      ),
+    };
+
+    const baraLeftSelect = {
+      baraLeftTabPlistBtn: playlistModalLeft.querySelector("#playlist-tab"),
+      baraLeftTabDisplayBtn: playlistModalLeft.querySelector("#display-tab"),
+      baraLeftTabFavBtn: playlistModalLeft.querySelector("#favorites-tab"),
+      baraLeftTabHistoryBtn: playlistModalLeft.querySelector("#history-tab"),
+      baraLeftTabStatsBtn: playlistModalLeft.querySelector("#stata-tab"),
+      baraLeftDisplayTitle: playlistModalLeft.querySelector("#display h5"),
+      baraLeftDisplayCount: playlistModalLeft.querySelector("#wmrdisplayCount"),
+      baraLeftNowPlayImg: playlistModalLeft.querySelector(
+        "#wmrNowPlayConInner"
+      ),
+    };
+
+    // console.log(baraLeftSelect.baraLeftDisplayCount);
+
+    wmrMixerTabs.addEventListener("click", wmrMixerTabsfn);
+    playerClose.addEventListener("click", playerCloseSelect);
+
+    function wmrMixerTabsfn(e) {
+      if (e.target.id === "wmrMixerPlayerBtn") {
+        playerDiv.classList.toggle("hidden");
+      } else if (e.target.id === "wmrMixerPlayListBtn") {
+        baraLeftSelect.baraLeftTabPlistBtn.click();
+      } else if (e.target.id === "wmrMixerDetailsBtn") {
+        baraLeftSelect.baraLeftTabDisplayBtn.click();
+        updateLeftConInfo(wmrCurrenttrack);
+      } else if (e.target.id === "wmrMixerFavoritesBtn") {
+        baraLeftSelect.baraLeftTabFavBtn.click();
+      } else if (e.target.id === "wmrMixerHistoryBtn") {
+        baraLeftSelect.baraLeftTabHistoryBtn.click();
+      } else if (e.target.id === "wmrMixerStatsBtn") {
+        baraLeftSelect.baraLeftTabStatsBtn.click();
+      }
+    }
+
+    function playerCloseSelect() {
+      playerDiv.classList.toggle("hidden");
+    }
+
+    const updateLeftConInfo = (track) => {
+      const { baraLeftDisplayTitle, baraLeftDisplayCount } = baraLeftSelect;
+      baraLeftDisplayCount.innerText = track.play_count;
+      baraLeftDisplayTitle.innerHTML = `<div><span class="text-wmr2"></span> <span class="wmr-Grey fs-6 text-uppercase">${track.name}</span></div>`;
+      console.log(baraLeftDisplayTitle);
+      console.log(track);
+    };
+    // function playerCloseSelect() {
+    //   button.addEventListener("click", function() {
+    //     const currentBackground = button.style.backgroundImage;
+    //     const newBackground = currentBackground.includes('button_small_off.png') ?
+    //                           'url(/static/img/wmr/pad_on.png)' :
+    //                           'url(/static/img/mixdesk/button_small_off.png)';
+    //     button.style.backgroundImage = newBackground;
+    //   });
+    // }
   });
 
   // Return the Mixcloud Player Widget
@@ -376,7 +498,7 @@ function getPlayList() {
       // Do something with the data, such as displaying it on the page
       loadMixPlaylist(trackData, playlistItems);
       loadTrack(TrackIndex);
-      mixerChannels(wmrVolLeftRange, wmCh1);
+      // mixerChannels(wmrVolLeftRange, wmCh1);
       mixerChannels(
         mixerDJM700Elements.wmrChannel3,
         mixerDJM700Elements.wmCh3,
@@ -436,22 +558,139 @@ const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
   const track = trackData[trackIndex];
   titleElem.innerText = track.name;
   console.log(track);
+  wmrCurrenttrack = track;
 
   if (wmrAutoPlay === "true") {
     // Load the track into the player
+
     await audio.load(track.url, wmrAutoPlay);
+    baraLeftStats();
+    setVolumeWithDelay(200); // call the function with a delay of 2 seconds
   } else {
     // Load the track into the player
     await audio.load(track.url);
+
     //audio.setVolume(wmrChannel3VolumeLevel); // Set the volume using the Mixcloud Player Widget API
   }
 
   // Update the track information on the player UI
   updateTrackInfo(track);
+
   // Set the cover image
   playerElements.coverImageElem.src = track.pictures.medium;
   //detailsImgElem.src = track.pictures.medium;
 };
+
+function baraLeftStats() {
+  // Accessing the data from wmrCurrenttrack array
+  const wmrCurrenttrack = wmrCurrenttrack;
+  console.log(wmrCurrenttrack);
+
+  // Chart.js configuration
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+
+  // Play Count Chart
+  const playCountChartCtx = document
+    .getElementById("playCountChart")
+    .getContext("2d");
+  new Chart(playCountChartCtx, {
+    type: "bar",
+    data: {
+      labels: ["Play Count"],
+      datasets: [
+        {
+          label: "Play Count",
+          data: [wmrCurrenttrack[0].play_count],
+          backgroundColor: "rgba(54, 162, 235, 0.6)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: chartOptions,
+  });
+
+  // Favorite Count Chart
+  const favoriteCountChartCtx = document
+    .getElementById("favoriteCountChart")
+    .getContext("2d");
+  new Chart(favoriteCountChartCtx, {
+    type: "bar",
+    data: {
+      labels: ["Favorite Count"],
+      datasets: [
+        {
+          label: "Favorite Count",
+          data: [wmrCurrenttrack[0].favorite_count],
+          backgroundColor: "rgba(255, 99, 132, 0.6)",
+          borderColor: "rgba(255, 99, 132, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: chartOptions,
+  });
+
+  // Comment Count Chart
+  const commentCountChartCtx = document
+    .getElementById("commentCountChart")
+    .getContext("2d");
+  new Chart(commentCountChartCtx, {
+    type: "bar",
+    data: {
+      labels: ["Comment Count"],
+      datasets: [
+        {
+          label: "Comment Count",
+          data: [wmrCurrenttrack[0].comment_count],
+          backgroundColor: "rgba(255, 205, 86, 0.6)",
+          borderColor: "rgba(255, 205, 86, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: chartOptions,
+  });
+
+  // Listener Count Chart
+  const listenerCountChartCtx = document
+    .getElementById("listenerCountChart")
+    .getContext("2d");
+  new Chart(listenerCountChartCtx, {
+    type: "bar",
+    data: {
+      labels: ["Listener Count"],
+      datasets: [
+        {
+          label: "Listener Count",
+          data: [wmrCurrenttrack[0].listener_count],
+          backgroundColor: "rgba(75, 192, 192, 0.6)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: chartOptions,
+  });
+}
+
+function setVolumeWithDelay(delay) {
+  setTimeout(() => {
+    const volumePercentage = wmrChannel3VolumeLevel;
+    const volume = volumePercentage / 100;
+    const volume3 = volumePercentage;
+    mixerDJM700Elements.wmrVolRightrangeInput.setAttribute("value", volume3);
+    mixerDJM700Elements.wmrMeterConCh3Val.innerText = volume3 / 10;
+    mixerDJM700Elements.wmCh3.setAttribute(
+      "data-val",
+      mixerDJM700Elements.wmrMeterConCh3Val.innerText
+    );
+    audio.setVolume(volume);
+  }, delay);
+}
 
 // Define a function to update the track information on the player UI
 const updateTrackInfo = (track) => {
@@ -481,14 +720,7 @@ const formatDuration = (duration) => {
 };
 
 function mixerChannels(Range, wmCh) {
-  const {
-    mixDJM700,
-    wmrChannel3,
-    wmCh3,
-    wmrMeterConCh1Val,
-    wmrMeterConCh3Val,
-    wmrVolRightrangeInput,
-  } = mixerDJM700Elements;
+  const { wmrMeterConCh3Val, wmrVolRightrangeInput } = mixerDJM700Elements;
 
   //Code that Gets Vol Contol Inputs
   vumeter(wmCh, {
@@ -498,17 +730,19 @@ function mixerChannels(Range, wmCh) {
   });
 
   Range.oninput = function (e) {
-    const volume = this.value / 10; // Scale the volume to be between 0 and 1
+    const volume = this.value / 100; // Scale the volume to be between 0 and 1
+    const volume2 = this.value / 10; // Scale the volume to be between 0 and 1
     audio.setVolume(volume); // Set the volume using the Mixcloud Player Widget API
     console.log(this.value);
-    wmCh.setAttribute("data-val", this.value);
+    wmCh.setAttribute("data-val", volume2);
     //wmrMeterConCh3Val.innerText = this.value;
-    // console.log(e.target);
-    if (e.target.id === "wmrVolLeftRange") {
-      wmrMeterConCh1Val.innerText = this.value;
-    } else if (e.target.id === "wmrVolRightRange") {
-      wmrMeterConCh3Val.innerText = this.value;
-      wmrVolRightrangeInput.setAttribute("value", this.value);
+    console.log(volume);
+    // if (e.target.id === "wmrVolLeftRange") {
+    //   wmrMeterConCh1Val.innerText = this.value;
+    // } else
+    if (e.target.id === "wmrVolRightRange") {
+      wmrMeterConCh3Val.innerText = volume2;
+      wmrVolRightrangeInput.setAttribute("value", volume2);
       wmrChannel3VolumeLevel = this.value;
     }
   };
@@ -582,7 +816,7 @@ function playNextTrack(tracklist) {
 // Open player
 openplayer(
   buttons,
-  mixcloudButton,
+  //mixcloudButton,
   playerButton,
   playerDiv,
   playerClose,
@@ -591,7 +825,7 @@ openplayer(
 
 function openplayer(
   buttons,
-  mixcloudButton,
+  //mixcloudButton,
   playerButton,
   playerDiv,
   playerClose,
@@ -601,6 +835,8 @@ function openplayer(
   mixcloudButton.addEventListener("click", function () {
     callFunctionAndSaveState();
     mixcloudPlayer(mixcloudBtnConRow);
+    // mixcloudPlayerToggle(playerDiv, playerClose);
+    console.log(mixcloudButton);
   });
   // Loop through the buttons and add a click event listener to each one
   buttons.forEach((button) => {
@@ -614,6 +850,10 @@ function openplayer(
     });
   });
 }
+
+// function mixcloudPlayerToggle(playerDiv, playerClose) {
+//   console.log(wmrMixerTabs);
+// }
 
 function mixcloudPlayer(mixcloudBtnConRow) {
   mixcloudBtnConRow.innerHTML = "";

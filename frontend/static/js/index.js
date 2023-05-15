@@ -564,7 +564,6 @@ const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
     // Load the track into the player
 
     await audio.load(track.url, wmrAutoPlay);
-    baraLeftStats();
     setVolumeWithDelay(200); // call the function with a delay of 2 seconds
   } else {
     // Load the track into the player

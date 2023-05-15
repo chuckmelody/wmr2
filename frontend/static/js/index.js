@@ -114,6 +114,8 @@ let wmrAutoPlay = "true";
 let wmrRepeatV = false;
 let isPlaying = false;
 
+
+
 function initializePlayer() {
   // Initialize the Mixcloud Player Widget
   const audio = Mixcloud.PlayerWidget(
@@ -580,101 +582,9 @@ const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
   //detailsImgElem.src = track.pictures.medium;
 };
 
-function baraLeftStats() {
-  // Accessing the data from wmrCurrenttrack array
-  const wmrCurrenttrack = wmrCurrenttrack;
-  console.log(wmrCurrenttrack);
+console.log(wmrCurrenttrack);
 
-  // Chart.js configuration
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-  };
 
-  // Play Count Chart
-  const playCountChartCtx = document
-    .getElementById("playCountChart")
-    .getContext("2d");
-  new Chart(playCountChartCtx, {
-    type: "bar",
-    data: {
-      labels: ["Play Count"],
-      datasets: [
-        {
-          label: "Play Count",
-          data: [wmrCurrenttrack[0].play_count],
-          backgroundColor: "rgba(54, 162, 235, 0.6)",
-          borderColor: "rgba(54, 162, 235, 1)",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: chartOptions,
-  });
-
-  // Favorite Count Chart
-  const favoriteCountChartCtx = document
-    .getElementById("favoriteCountChart")
-    .getContext("2d");
-  new Chart(favoriteCountChartCtx, {
-    type: "bar",
-    data: {
-      labels: ["Favorite Count"],
-      datasets: [
-        {
-          label: "Favorite Count",
-          data: [wmrCurrenttrack[0].favorite_count],
-          backgroundColor: "rgba(255, 99, 132, 0.6)",
-          borderColor: "rgba(255, 99, 132, 1)",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: chartOptions,
-  });
-
-  // Comment Count Chart
-  const commentCountChartCtx = document
-    .getElementById("commentCountChart")
-    .getContext("2d");
-  new Chart(commentCountChartCtx, {
-    type: "bar",
-    data: {
-      labels: ["Comment Count"],
-      datasets: [
-        {
-          label: "Comment Count",
-          data: [wmrCurrenttrack[0].comment_count],
-          backgroundColor: "rgba(255, 205, 86, 0.6)",
-          borderColor: "rgba(255, 205, 86, 1)",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: chartOptions,
-  });
-
-  // Listener Count Chart
-  const listenerCountChartCtx = document
-    .getElementById("listenerCountChart")
-    .getContext("2d");
-  new Chart(listenerCountChartCtx, {
-    type: "bar",
-    data: {
-      labels: ["Listener Count"],
-      datasets: [
-        {
-          label: "Listener Count",
-          data: [wmrCurrenttrack[0].listener_count],
-          backgroundColor: "rgba(75, 192, 192, 0.6)",
-          borderColor: "rgba(75, 192, 192, 1)",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: chartOptions,
-  });
-}
 
 function setVolumeWithDelay(delay) {
   setTimeout(() => {

@@ -114,8 +114,6 @@ let wmrAutoPlay = "true";
 let wmrRepeatV = false;
 let isPlaying = false;
 
-
-
 function initializePlayer() {
   // Initialize the Mixcloud Player Widget
   const audio = Mixcloud.PlayerWidget(
@@ -562,10 +560,14 @@ const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
   console.log(track);
   wmrCurrenttrack = track;
 
+  console.log(track);
+
   if (wmrAutoPlay === "true") {
     // Load the track into the player
 
     await audio.load(track.url, wmrAutoPlay);
+
+    console.log(track);
     setVolumeWithDelay(200); // call the function with a delay of 2 seconds
   } else {
     // Load the track into the player
@@ -581,10 +583,6 @@ const loadTrack = async (trackIndex, wmrAutoPlay, pauseBtn, playBtn) => {
   playerElements.coverImageElem.src = track.pictures.medium;
   //detailsImgElem.src = track.pictures.medium;
 };
-
-console.log(wmrCurrenttrack);
-
-
 
 function setVolumeWithDelay(delay) {
   setTimeout(() => {

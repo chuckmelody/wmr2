@@ -74,16 +74,23 @@ body {
   color: #999;
 }
 
+.wmrHeaderCol {
+  background-color: #090909;
+}
+.wmrTextWhite {
+  color: rgb(255, 255, 255, 0.5);
+}
+
 *,
 ::after,
 ::before {
   box-sizing: border-box;
 }
-.btn,
+/* .btn,
 .button:focus {
   outline: none !important;
   border: none !important;
-}
+} */
 
 .bg-black {
   background-color: rgba(0, 0, 0, 0.8);
@@ -1188,6 +1195,51 @@ background-repeat: no-repeat; */
 #wmrMeterConCh2,
 #wmrMeterConCh1 {
   width: 10%;
+}
+
+.wmr-bg-image {
+  background-image: url("/static/img/wmr/buttonsbackpanel.png");
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.01);
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.card {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header {
+  position: relative;
+  z-index: 1;
+}
+
+.card-icon {
+  position: absolute;
+  top: -55px;
+  right: -30px;
+  padding: 10px;
+  opacity: 0.3;
+  color: white;
+  font-size: 7rem;
+}
+
+#wmrStatImg {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.wmrTotalPlayCardColor {
+  background-image: linear-gradient(to left, #000 -10%, #0d6efd 250%);
+}
+.wmrFollowerCardColor {
+  background-image: linear-gradient(to left, #000 -10%, #585833 250%);
+}
+.wmrCommentCardColor {
+  background-image: linear-gradient(to left, #000 -10%, #ffc107 250%);
+}
+.wmrFavoritesCardColor {
+  background-image: linear-gradient(to left, #000 -10%, #dc3545 250%);
 }
 
 /* .playlist-modal::-webkit-scrollbar-thumb:hover {

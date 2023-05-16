@@ -73,55 +73,139 @@ const wmrTabListCon = () => {
         </div>
       </div>
     </div>
-    <div class="tab-pane fade" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+    <div class="tab-pane fade text-dark" id="stats" role="tabpanel" aria-labelledby="stats-tab">
       <div class="card bg-transparent">
         <div class="card-body">
-          <h5 class="card-title">Stats</h5>
+          <h5 class="card-title text-wmr2">Mixcloud Statistics</h5>
           <div class="container">
-    <div class="row mt-5">
-      <div class="col-lg-6">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-title">Play Count</h5>
+          <div class="row mt-4">
+          <div class="col-lg-12">
+          <div>
+          <img class="img-fluid" src="static/img/wmr/covers/Gospel_728x90.webp" alt="wmrBanner">
           </div>
-          <div class="card-body">
-            <canvas id="playCountChart"></canvas>
+          </div>
+          </div>
+    <div class="row mt-4">
+    <div class="col-lg-12">
+    <div class="card bg-dark">
+      <div class="card-header wmrHeaderCol">
+        <h5 class="card-title wmrMixEffectCd mb-0">Current Mix</h5>
+      </div>
+      <div class="card-body wmr-bg-image text-secondary">
+        <div class="row">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <img class="img-fluid" id="wmrStatImg" src="/static/img/wmr/covers/des.jpg">
+              <div class="d-flex flex-column">
+              <div class="ms-3 wmrTextWhite">Reggae Mi Reggae Vol 12</div>
+              <div class="ms-3 fs-6">By: Chuck Melody</div>
+              </div>
+            </div>
+            <div class="text-end">
+              <span class="bi bi-play me-2"></span>
+              <span class="wmrStatsPlayed">465</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    </div>
+    <div class="row mt-4">
+      <div class="col-lg-12">
+      <div class="d-flex justify-content-end align-items-center gap-3">
+      <div>
+      <button type="button" class="btn btn-outline-secondary">Shows <span>420</span></button> 
+      </div>
+      <div>
+      <button type="button" class="btn btn-outline-secondary">Playlists <span>48</span></button> 
+      </div>
+      </div>
+      </div>
+    </div>
+
+
+
+    <div class="row mt-4">
+
+      <div class="col-lg-6">
+        <div class="card wmrTotalPlayCardColor">
+          <div class="card-header">
+          <div class="card-icon">
+          <i class="bi bi-play-circle"></i>
+          </div>
+            <h5 class="card-title wmrTextWhite">Total plays</h5>
+          </div>
+          <div class="card-body wmrTextWhite">
+            <h1 class="display-4">1000
+            </h1>
           </div>
         </div>
       </div>
       <div class="col-lg-6">
-        <div class="card">
+        <div class="card wmrFavoritesCardColor">
           <div class="card-header">
-            <h5 class="card-title">Favorite Count</h5>
+          <div class="card-icon">
+          <i class="bi bi-heart-fill"></i>
           </div>
-          <div class="card-body">
-            <canvas id="favoriteCountChart"></canvas>
+            <h5 class="card-title wmrTextWhite">Favorites</h5>
+          </div>
+          <div class="card-body wmrTextWhite">
+          <h1 class="display-4">374
+          </h1>
           </div>
         </div>
       </div>
     </div>
     <div class="row mt-5">
       <div class="col-lg-6">
-        <div class="card">
+        <div class="card wmrFollowerCardColor">
           <div class="card-header">
-            <h5 class="card-title">Comment Count</h5>
+          <div class="card-icon">
+          <i class="bi bi-person-circle"></i>
           </div>
-          <div class="card-body">
-            <canvas id="commentCountChart"></canvas>
+            <h5 class="card-title wmrTextWhite">History</h5>
+          </div>
+          <div class="card-body wmrTextWhite">
+          <h1 class="display-4">99
+            </h1>
           </div>
         </div>
       </div>
       <div class="col-lg-6">
-        <div class="card">
-          <div class="card-header">
-            <h5 class="card-title">Listener Count</h5>
+      <div class="card wmrCommentCardColor">
+        <div class="card-header">
+          <div class="card-icon">
+          <i class="bi bi-chat-dots"></i>
           </div>
-          <div class="card-body">
-            <canvas id="listenerCountChart"></canvas>
-          </div>
+          <h5 class="card-title wmrTextWhite">Comment</h5>
+        </div>
+        <div class="card-body wmrTextWhite">
+          <h1 class="display-4">540</h1>
         </div>
       </div>
     </div>
+    
+    </div>
+    <div class="row mt-5">
+    <div class="col-lg-6">
+      <div class="card wmrFollowerCardColor">
+        <div class="card-header">
+        <div class="card-icon">
+        <i class="bi bi-person-circle"></i>
+        </div>
+          <h5 class="card-title wmrTextWhite">Followers</h5>
+        </div>
+        <div class="card-body wmrTextWhite">
+        <h1 class="display-4">1800
+          </h1>
+        </div>
+      </div>
+    </div>
+
+  
+  </div>
   </div>
         </div>
       </div>

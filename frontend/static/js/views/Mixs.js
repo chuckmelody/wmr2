@@ -20,7 +20,7 @@ export default class extends AbstractView {
              </div>
           </div>
           <div class="col-sm-12 col-md-4">
-             <div class="mt-4 p-4 pt-2" id="wmrNowPlayDp">
+             <div class="mt-4 p-4 pt-2 wmrNowPlayDp" id="wmrNowPlayDp">
              <div class="row pt-2">
              <div class="d-flex justify-content-between align-items-center px-4">
              <div id="wmr-logo" class="fw-bold position-relative">
@@ -185,8 +185,76 @@ export default class extends AbstractView {
                 </div>
              </div>
           </div>
-          <div class="col-12 col-md-4">
+          <div class="col-sm-12 col-md-4">
           
+          <div class="mt-4 p-4 pt-2 wmrNowPlayDp" id="wmrNowPlayDp">
+          <div class="row pt-2">
+             <div class="d-flex justify-content-between align-items-center px-4">
+             <div id="wmr-logo" class="fw-bold position-relative">
+                                    <sup id="wmr-logo-td">™</sup>
+                                    <h1 class="text-wmr2">Baracoda
+                                        
+                                        
+                                    </h1>
+
+                                </div>
+             <div>
+             <span class="wmrM700">Media Displayer</span> <span class="text-wmr"><h5 class="text-wmr2">DJD-700</h5></span>
+             </div>
+             </div>
+             </div>
+             <div class="wmrNowPlayDpInner my-0 p-2 pb-3 mb-4">
+             <!-- Galleries -->
+<div class="container px-2 mt-4">
+<div class="card border-0 rounded-1">
+<div class="card-header wmrHeaderCol rounded-0 wmr-Grey fw-bolder text-uppercase py-1 text-start">
+Chuck
+</div>
+<div class="card-body p-1" id="wmrDJDBodyRight">
+  <div class="row">
+    <div class="col">
+      <h2 class="mt-4">10 Most Played Songs</h2>
+      <div id="mostPlayedGallery" class="image-gallery"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h2 class="mt-4">10 Random Songs</h2>
+      <div id="randomSongsGallery" class="image-gallery"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h2 class="mt-4">10 Random Genres</h2>
+      <div id="randomGenresGallery" class="image-gallery"></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightboxModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <img id="lightboxImage" src="" alt="Enlarged Image">
+  </div>
+</div>
+
+<!-- Social Sharing Buttons -->
+<div class="social-sharing">
+  <button id="shareSongButton" class="btn btn-primary">Share Song</button>
+  <button id="shareGalleryButton" class="btn btn-secondary">Share Gallery</button>
+</div>
+
+<!-- Related Songs Section -->
+<div id="relatedSongsSection">
+  <h3>Related Songs</h3>
+  <div id="relatedSongsGallery" class="image-gallery"></div>
+</div>
+
+             </div>
+          </div>
         </div>
        </div>
     </div>

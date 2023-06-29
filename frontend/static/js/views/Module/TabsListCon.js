@@ -46,7 +46,9 @@ const wmrTabListCon = () => {
           
           <div class="d-flex justify-content-center align-items-center position-relative" id="wmrNowPlayCon">
             <div id="wmrNowPlayConInner">
-            <img src="./static/img/wmr/covers/des.jpg" alt="Mix Image ">
+            <div class="wmrNowPlayImage-container">
+            <img src="./static/img/wmr/covers/des.jpg" alt="Mix Image">
+            </div>
             </div>
             <div id="wmrNowPlayConOuter" class="w-100">
                 <img class="img-fluid" src="./static/img/wmr/covers/TabScreenFrame400.png" alt="Tab Screen">
@@ -76,20 +78,27 @@ const wmrTabListCon = () => {
     <div class="tab-pane fade text-dark" id="stats" role="tabpanel" aria-labelledby="stats-tab">
       <div class="card bg-transparent">
         <div class="card-body">
-          <h5 class="card-title text-wmr2">Mixcloud Statistics</h5>
-          <div class="container">
-          <div class="row mt-4">
-          <div class="col-lg-12">
-          <div>
-          <img class="img-fluid" src="static/img/wmr/covers/Gospel_728x90.webp" alt="wmrBanner">
-          </div>
-          </div>
-          </div>
+        <div class="d-flex justify-content-between align-items-center gap-3">
+        <div class="ms-2">
+        <h5 class="card-title text-wmr2">Mixcloud Statistics</h5>
+        </div>
+              <div class="me-2 d-flex justify-contents-center align-items-center gap-2">
+              <div>
+              <button type="button" class="btn btn-outline-wmr">Shows <span>420</span></button> 
+              </div>
+              <div>
+              <button type="button" class="btn btn-outline-wmr">Playlists <span>48</span></button> 
+              </div>
+              </div>
+              </div>
+          
+          <div class="container-fluid px-0">
+          
     <div class="row mt-4">
     <div class="col-lg-12">
     <div class="card bg-dark">
       <div class="card-header wmrHeaderCol">
-        <h5 class="card-title wmrMixEffectCd mb-0">Current Mix</h5>
+        <h5 class="card-title wmrMixEffectCd mb-0 wmrTextWhite">Current Mix</h5>
       </div>
       <div class="card-body wmr-bg-image text-secondary">
         <div class="row">
@@ -97,13 +106,13 @@ const wmrTabListCon = () => {
             <div class="d-flex align-items-center">
               <img class="img-fluid" id="wmrStatImg" src="/static/img/wmr/covers/des.jpg">
               <div class="d-flex flex-column">
-              <div class="ms-3 wmrTextWhite">Reggae Mi Reggae Vol 12</div>
+              <div class="ms-3 text-wmr2">Reggae Mi Reggae Vol 12</div>
               <div class="ms-3 fs-6">By: Chuck Melody</div>
               </div>
             </div>
             <div class="text-end">
-              <span class="bi bi-play me-2"></span>
-              <span class="wmrStatsPlayed">465</span>
+              <span class="bi bi-play me-2 text-wmr2"></span>
+              <span class="wmrStatsPlayed text-wmr2">465</span>
             </div>
           </div>
         </div>
@@ -112,22 +121,27 @@ const wmrTabListCon = () => {
   </div>
   
     </div>
-    <div class="row mt-4">
+    <div class="row mt-2">
       <div class="col-lg-12">
-      <div class="d-flex justify-content-end align-items-center gap-3">
-      <div>
-      <button type="button" class="btn btn-outline-secondary">Shows <span>420</span></button> 
-      </div>
-      <div>
-      <button type="button" class="btn btn-outline-secondary">Playlists <span>48</span></button> 
-      </div>
-      </div>
+
       </div>
     </div>
 
+    <div class="row my-3 px-2 ">
+          <div class="col-lg-12">
 
 
-    <div class="row mt-4">
+          <div>
+          <img class="img-fluid" src="static/img/wmr/covers/Gospel_728x90.webp" alt="wmrBanner">
+          </div>
+
+          
+          </div>
+          </div>
+
+    
+
+    <div class="row mt-1 wmr-bg-image py-4 px-2 mx-1">
 
       <div class="col-lg-6">
         <div class="card wmrTotalPlayCardColor">
@@ -158,17 +172,18 @@ const wmrTabListCon = () => {
         </div>
       </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-4 wmr-bg-image py-4 px-2 mx-1">
+    
       <div class="col-lg-6">
         <div class="card wmrFollowerCardColor">
           <div class="card-header">
           <div class="card-icon">
           <i class="bi bi-person-circle"></i>
           </div>
-            <h5 class="card-title wmrTextWhite">History</h5>
+            <h5 class="card-title wmrTextWhite">Followers</h5>
           </div>
           <div class="card-body wmrTextWhite">
-          <h1 class="display-4">99
+          <h1 class="display-4">1800
             </h1>
           </div>
         </div>
@@ -190,7 +205,7 @@ const wmrTabListCon = () => {
     </div>
     <div class="row mt-5">
     <div class="col-lg-6">
-      <div class="card wmrFollowerCardColor">
+      <div class="card wmrFollowerCardColor d-none">
         <div class="card-header">
         <div class="card-icon">
         <i class="bi bi-person-circle"></i>

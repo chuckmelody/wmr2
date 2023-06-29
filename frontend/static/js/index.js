@@ -64,6 +64,19 @@ const router = async () => {
 };
 
 window.addEventListener("popstate", router);
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.addEventListener("click", (e) => {
+    if (e.target.matches("[data-link]")) {
+      e.preventDefault();
+      navigateTo(e.target.href);
+    }
+    if (e.target.id === "wmr-mixcloud-btn") {
+      initializePlayer();
+    }
+  });
+
+  router();
+});
 
 let audio = Mixcloud.PlayerWidget(document.getElementById("wmr-audio-iframe"));
 let currentTrackIndex = 90;
@@ -80,20 +93,6 @@ const playerClose = document.querySelector("#player-close");
 const mixcloudBtnConRow = document.querySelector("#wmr-player-btns-con");
 const currentTime = playerDiv.querySelector("#wmr-foot-player-currentTime");
 const wmrduration = playerDiv.querySelector("#wmr-foot-player-duration");
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.body.addEventListener("click", (e) => {
-    if (e.target.matches("[data-link]")) {
-      e.preventDefault();
-      navigateTo(e.target.href);
-    }
-    if (e.target.id === "wmr-mixcloud-btn") {
-      initializePlayer();
-    }
-  });
-
-  router();
-});
 
 // // Get the tracks from the JSON server
 // const getTracklist = async () => {
@@ -456,7 +455,7 @@ function getPlayList() {
     const wmCh1 = document.getElementById("wmCh1");
 
     mixerDJM700Elements = {
-      mixDJM700: document.getElementById("wmrNowPlayDp"),
+      mixDJM700: document.querySelector(".wmrNowPlayDp"),
       wmrChannel3: document.getElementById("wmrVolRightRange"),
       wmCh3: document.getElementById("wmCh3"),
       wmrMeterConCh1Val: document.querySelector("#wmrMeterConCh1 span"),
@@ -676,49 +675,15 @@ function mixerMixcludeVolume(Range, wmCh) {
 // source.connect(gainNode).connect(audioContext.destination);
 // console.log(mixerDJM700Elements.wmrChannel3);
 
-function playTrack() {
-  // Code that plays the current track
-}
-
-function pauseTrack() {
-  // Code that pauses the current track
-}
-
-function stopTrack() {
-  // Code that stops the current track
-}
-
-function togglePlayPause() {
-  // Code that toggles between playing and pausing the current track
-}
-
-function toggleMute() {
-  // Code that toggles between muting and unmuting the player
-}
-
-function toggleRepeat() {
-  // Code that toggles between repeating and not repeating the current track
-}
-
-// function updateTrackInfo(track) {
-//   // Code that updates the track information on the player UI
-// }
-
 // Function to play the previous track
-const playPreviousTrack = async (TrackIndex) => {
-  // Decrement the track index
-  TrackIndex--;
-  if (TrackIndex < 0) {
-    TrackIndex = trackData.length + TrackIndex;
-    console.log(TrackIndex);
-  }
-};
-
-function playNextTrack(tracklist) {
-  // Code that loads and plays the previous track in the tracklist
-}
-
-// End
+// const playPreviousTrack = async (TrackIndex) => {
+//   // Decrement the track index
+//   TrackIndex--;
+//   if (TrackIndex < 0) {
+//     TrackIndex = trackData.length + TrackIndex;
+//     console.log(TrackIndex);
+//   }
+// };
 
 // Open player
 openplayer(
@@ -757,10 +722,6 @@ function openplayer(
     });
   });
 }
-
-// function mixcloudPlayerToggle(playerDiv, playerClose) {
-//   console.log(wmrMixerTabs);
-// }
 
 function mixcloudPlayer(mixcloudBtnConRow) {
   mixcloudBtnConRow.innerHTML = "";
